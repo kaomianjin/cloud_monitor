@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinkun.cloud_monitor.dao.TriggerMapper" >
+  <resultMap id="BaseResultMap" type="com.jinkun.cloud_monitor.domain.bean.Trigger" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="monitor_items_id" property="monitorItemsId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="grade" property="grade" jdbcType="VARCHAR" />
+    <result column="diaplay_name" property="diaplayName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="BIT" />
+    <result column="expression" property="expression" jdbcType="VARCHAR" />
+    <result column="multiple_events" property="multipleEvents" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, monitor_items_id, name, grade, diaplay_name, status, expression, multiple_events
+  </sql>
+  <select id="selectListByParameter" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from trigger
+    WHERE
+
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from trigger
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from trigger
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jinkun.cloud_monitor.domain.bean.Trigger" >
+    insert into trigger (id, monitor_items_id, name, 
+      grade, diaplay_name, status, 
+      expression, multiple_events)
+    values (#{id,jdbcType=INTEGER}, #{monitorItemsId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{grade,jdbcType=VARCHAR}, #{diaplayName,jdbcType=VARCHAR}, #{status,jdbcType=BIT}, 
+      #{expression,jdbcType=VARCHAR}, #{multipleEvents,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinkun.cloud_monitor.domain.bean.Trigger" >
+    insert into trigger
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="monitorItemsId != null" >
+        monitor_items_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+      <if test="diaplayName != null" >
+        diaplay_name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="expression != null" >
+        expression,
+      </if>
+      <if test="multipleEvents != null" >
+        multiple_events,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="monitorItemsId != null" >
+        #{monitorItemsId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="diaplayName != null" >
+        #{diaplayName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="expression != null" >
+        #{expression,jdbcType=VARCHAR},
+      </if>
+      <if test="multipleEvents != null" >
+        #{multipleEvents,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinkun.cloud_monitor.domain.bean.Trigger" >
+    update trigger
+    <set >
+      <if test="monitorItemsId != null" >
+        monitor_items_id = #{monitorItemsId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="diaplayName != null" >
+        diaplay_name = #{diaplayName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=BIT},
+      </if>
+      <if test="expression != null" >
+        expression = #{expression,jdbcType=VARCHAR},
+      </if>
+      <if test="multipleEvents != null" >
+        multiple_events = #{multipleEvents,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinkun.cloud_monitor.domain.bean.Trigger" >
+    update trigger
+    set monitor_items_id = #{monitorItemsId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=VARCHAR},
+      diaplay_name = #{diaplayName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=BIT},
+      expression = #{expression,jdbcType=VARCHAR},
+      multiple_events = #{multipleEvents,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

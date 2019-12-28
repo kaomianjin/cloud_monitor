@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinkun.cloud_monitor.dao.CloudClassifyMapper" >
+  <resultMap id="BaseResultMap" type="com.jinkun.cloud_monitor.domain.bean.CloudClassify" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="BIT" />
+    <result column="cloud_service_id" property="cloudServiceId" jdbcType="BIGINT" />
+    <result column="cloud_components_id" property="cloudComponentsId" jdbcType="BIGINT" />
+    <result column="template_id" property="templateId" jdbcType="BIGINT" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, status, cloud_service_id, cloud_components_id, template_id, description
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from cloud_classify
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from cloud_classify
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.jinkun.cloud_monitor.domain.bean.CloudClassify" >
+    insert into cloud_classify (id, name, status, 
+      cloud_service_id, cloud_components_id, template_id, 
+      description)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{status,jdbcType=BIT}, 
+      #{cloudServiceId,jdbcType=BIGINT}, #{cloudComponentsId,jdbcType=BIGINT}, #{templateId,jdbcType=BIGINT}, 
+      #{description,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinkun.cloud_monitor.domain.bean.CloudClassify" >
+    insert into cloud_classify
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="cloudServiceId != null" >
+        cloud_service_id,
+      </if>
+      <if test="cloudComponentsId != null" >
+        cloud_components_id,
+      </if>
+      <if test="templateId != null" >
+        template_id,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="cloudServiceId != null" >
+        #{cloudServiceId,jdbcType=BIGINT},
+      </if>
+      <if test="cloudComponentsId != null" >
+        #{cloudComponentsId,jdbcType=BIGINT},
+      </if>
+      <if test="templateId != null" >
+        #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinkun.cloud_monitor.domain.bean.CloudClassify" >
+    update cloud_classify
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=BIT},
+      </if>
+      <if test="cloudServiceId != null" >
+        cloud_service_id = #{cloudServiceId,jdbcType=BIGINT},
+      </if>
+      <if test="cloudComponentsId != null" >
+        cloud_components_id = #{cloudComponentsId,jdbcType=BIGINT},
+      </if>
+      <if test="templateId != null" >
+        template_id = #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinkun.cloud_monitor.domain.bean.CloudClassify" >
+    update cloud_classify
+    set name = #{name,jdbcType=VARCHAR},
+      status = #{status,jdbcType=BIT},
+      cloud_service_id = #{cloudServiceId,jdbcType=BIGINT},
+      cloud_components_id = #{cloudComponentsId,jdbcType=BIGINT},
+      template_id = #{templateId,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

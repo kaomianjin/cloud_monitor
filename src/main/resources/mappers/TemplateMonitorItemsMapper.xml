@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinkun.cloud_monitor.dao.TemplateMonitorItemsMapper" >
+  <resultMap id="BaseResultMap" type="com.jinkun.cloud_monitor.domain.bean.TemplateMonitorItems" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="template_id" property="templateId" jdbcType="BIGINT" />
+    <result column="monitor_items_id" property="monitorItemsId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, template_id, monitor_items_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from template_monitor_items
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from template_monitor_items
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.jinkun.cloud_monitor.domain.bean.TemplateMonitorItems" >
+    insert into template_monitor_items (id, template_id, monitor_items_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{templateId,jdbcType=BIGINT}, #{monitorItemsId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinkun.cloud_monitor.domain.bean.TemplateMonitorItems" >
+    insert into template_monitor_items
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="templateId != null" >
+        template_id,
+      </if>
+      <if test="monitorItemsId != null" >
+        monitor_items_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="templateId != null" >
+        #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="monitorItemsId != null" >
+        #{monitorItemsId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinkun.cloud_monitor.domain.bean.TemplateMonitorItems" >
+    update template_monitor_items
+    <set >
+      <if test="templateId != null" >
+        template_id = #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="monitorItemsId != null" >
+        monitor_items_id = #{monitorItemsId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinkun.cloud_monitor.domain.bean.TemplateMonitorItems" >
+    update template_monitor_items
+    set template_id = #{templateId,jdbcType=BIGINT},
+      monitor_items_id = #{monitorItemsId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinkun.cloud_monitor.dao.MonitorManagementMapper" >
+  <resultMap id="BaseResultMap" type="com.jinkun.cloud_monitor.domain.bean.MonitorManagement" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="cloud_service_id" property="cloudServiceId" jdbcType="BIGINT" />
+    <result column="cloud_components_id" property="cloudComponentsId" jdbcType="BIGINT" />
+    <result column="cloud_datasource_id" property="cloudDatasourceId" jdbcType="BIGINT" />
+    <result column="monitor" property="monitor" jdbcType="BIT" />
+    <result column="auto" property="auto" jdbcType="BIT" />
+    <result column="template_id" property="templateId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cloud_service_id, cloud_components_id, cloud_datasource_id, monitor, auto, template_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from monitor_management
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from monitor_management
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.jinkun.cloud_monitor.domain.bean.MonitorManagement" >
+    insert into monitor_management (id, cloud_service_id, cloud_components_id, 
+      cloud_datasource_id, monitor, auto, 
+      template_id)
+    values (#{id,jdbcType=BIGINT}, #{cloudServiceId,jdbcType=BIGINT}, #{cloudComponentsId,jdbcType=BIGINT}, 
+      #{cloudDatasourceId,jdbcType=BIGINT}, #{monitor,jdbcType=BIT}, #{auto,jdbcType=BIT}, 
+      #{templateId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinkun.cloud_monitor.domain.bean.MonitorManagement" >
+    insert into monitor_management
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cloudServiceId != null" >
+        cloud_service_id,
+      </if>
+      <if test="cloudComponentsId != null" >
+        cloud_components_id,
+      </if>
+      <if test="cloudDatasourceId != null" >
+        cloud_datasource_id,
+      </if>
+      <if test="monitor != null" >
+        monitor,
+      </if>
+      <if test="auto != null" >
+        auto,
+      </if>
+      <if test="templateId != null" >
+        template_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="cloudServiceId != null" >
+        #{cloudServiceId,jdbcType=BIGINT},
+      </if>
+      <if test="cloudComponentsId != null" >
+        #{cloudComponentsId,jdbcType=BIGINT},
+      </if>
+      <if test="cloudDatasourceId != null" >
+        #{cloudDatasourceId,jdbcType=BIGINT},
+      </if>
+      <if test="monitor != null" >
+        #{monitor,jdbcType=BIT},
+      </if>
+      <if test="auto != null" >
+        #{auto,jdbcType=BIT},
+      </if>
+      <if test="templateId != null" >
+        #{templateId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinkun.cloud_monitor.domain.bean.MonitorManagement" >
+    update monitor_management
+    <set >
+      <if test="cloudServiceId != null" >
+        cloud_service_id = #{cloudServiceId,jdbcType=BIGINT},
+      </if>
+      <if test="cloudComponentsId != null" >
+        cloud_components_id = #{cloudComponentsId,jdbcType=BIGINT},
+      </if>
+      <if test="cloudDatasourceId != null" >
+        cloud_datasource_id = #{cloudDatasourceId,jdbcType=BIGINT},
+      </if>
+      <if test="monitor != null" >
+        monitor = #{monitor,jdbcType=BIT},
+      </if>
+      <if test="auto != null" >
+        auto = #{auto,jdbcType=BIT},
+      </if>
+      <if test="templateId != null" >
+        template_id = #{templateId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinkun.cloud_monitor.domain.bean.MonitorManagement" >
+    update monitor_management
+    set cloud_service_id = #{cloudServiceId,jdbcType=BIGINT},
+      cloud_components_id = #{cloudComponentsId,jdbcType=BIGINT},
+      cloud_datasource_id = #{cloudDatasourceId,jdbcType=BIGINT},
+      monitor = #{monitor,jdbcType=BIT},
+      auto = #{auto,jdbcType=BIT},
+      template_id = #{templateId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
