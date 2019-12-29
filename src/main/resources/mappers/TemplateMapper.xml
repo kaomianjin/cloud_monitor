@@ -17,6 +17,146 @@
     id, name, cloud_type_id, cloud_components_id, type, description, create_time, update_time, 
     operator, deleted
   </sql>
+    <select id="selectIdsByParameter" resultType="long">
+        SELECT
+            id
+        FROM
+            template
+        WHERE
+            cloud_service_id = #{req.cloudServiceId}
+            AND cloud_components_id =#{req.cloudComponentsId}
+    </select>
+  <select id="selectListVoByParameter" resultType="com.jinkun.cloud_monitor.domain.vo.TemplateVo">
+    SELECT
+        template_id id,
+        GROUP_CONCAT( `name` ) `name`,
+        GROUP_CONCAT( type ) type,
+        sum( s.itemCount ) monitorNumber,
+        sum( s.graphCount ) graphNumber,
+        sum( s.classifyCount ) classificationNumber,
+        GROUP_CONCAT( s.templateLable ) labels,
+        sum( triggerCount ) triggerNumber
+    FROM
+        (
+    SELECT
+        template_id,
+        NULL `name`,
+        NULL type,
+        count( 1 ) itemCount,
+        0 graphCount,
+        0 classifyCount,
+        NULL templateLable,
+        0 triggerCount
+    FROM
+        template_monitor_items
+    WHERE
+        template_id IN (
+      <foreach collection="ids" item="item" separator=",">
+          #{item}
+      </foreach>
+      )
+    GROUP BY
+        template_id UNION ALL
+    SELECT
+        template_id,
+        NULL `name`,
+        NULL type,
+        0 itemCount,
+        COUNT( 1 ) graphCount,
+        0 classifyCount,
+        NULL templateLable,
+        0 triggerCount
+    FROM
+        graph
+    WHERE
+        template_id IN (
+      <foreach collection="ids" item="item" separator=",">
+          #{item}
+      </foreach>
+      )
+    GROUP BY
+        template_id UNION ALL
+    SELECT
+        template_id,
+        NULL `name`,
+        NULL type,
+        0 itemCount,
+        0 graphCount,
+        COUNT( 1 ) classifyCount,
+        NULL templateLable,
+        0 triggerCount
+    FROM
+        cloud_classify_template
+    WHERE
+        template_id IN (
+      <foreach collection="ids" item="item" separator=",">
+          #{item}
+      </foreach>
+      )
+    GROUP BY
+        template_id UNION ALL
+    SELECT
+        template_id,
+        NULL `name`,
+        NULL type,
+        0 itemCount,
+        0 graphCount,
+        0 classifyCount,
+        GROUP_CONCAT( `name` ) templateLable,
+        0 triggerCount
+    FROM
+        template_lable
+    WHERE
+        template_id IN (
+      <foreach collection="ids" item="item" separator=",">
+          #{item}
+      </foreach>
+      )
+    GROUP BY
+        template_id UNION ALL
+    SELECT
+        id AS template_id,
+        `name` AS `name`,
+        type,
+        0 itemCount,
+        0 graphCount,
+        0 classifyCount,
+        NULL templateLable,
+        0 triggerCount
+    FROM
+        template
+    WHERE
+        id IN (
+      <foreach collection="ids" item="item" separator=",">
+          #{item}
+      </foreach>
+      )
+    GROUP BY
+        template_id UNION ALL
+    SELECT
+        c.template_id,
+        NULL `name`,
+        NULL type,
+        0 itemCount,
+        0 graphCount,
+        0 classifyCount,
+        NULL templateLable,
+        count( t.id ) triggerCount
+    FROM
+        `trigger` AS t
+        LEFT JOIN template_monitor_items AS c ON t.monitor_items_id = c.id
+    WHERE
+        c.template_id IN (
+      <foreach collection="ids" item="item" separator=",">
+          #{item}
+      </foreach>
+      )
+    GROUP BY
+        template_id
+        ) s
+    GROUP BY
+        template_id;
+  </select>
   <select id="selectListByParameter" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

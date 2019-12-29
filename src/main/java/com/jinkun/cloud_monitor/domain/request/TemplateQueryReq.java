@@ -13,8 +13,8 @@ import lombok.Data;
 @Data
 public class TemplateQueryReq extends BaseQuery {
 
-    private Long cloudTypeId;
-
     private Long cloudServiceId;
+
+    private Long cloudComponentsId;
 
 }

@@ -1,7 +1,11 @@
 package com.jinkun.cloud_monitor.domain.bean;
 
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import java.util.Date;
 
+@NoArgsConstructor
 public class Template {
     private Long id;
 

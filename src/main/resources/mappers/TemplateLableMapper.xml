@@ -9,6 +9,20 @@
   <sql id="Base_Column_List" >
     id, name, template_id
   </sql>
+  <insert id="insertBatch" >
+    insert into template_lable (name, template_id)
+    values
+    <foreach collection="templateLableList" item="item" index="index" separator=",">
+      (#{item.name,jdbcType=VARCHAR}, #{item.templateId,jdbcType=BIGINT})
+    </foreach>
+  </insert>
+  <select id="selectListByTemplateId" resultMap="BaseResultMap">
+    SELECT
+     <include refid="Base_Column_List" />
+    FROM template_lable
+    WHERE
+    template_id =#{templateId}
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

@@ -1,11 +1,22 @@
 package com.jinkun.cloud_monitor.service;
 
+import com.github.pagehelper.PageInfo;
+import com.jinkun.cloud_monitor.domain.po.*;
+import com.jinkun.cloud_monitor.domain.request.TemplateDetailReq;
 import com.jinkun.cloud_monitor.domain.request.TemplateQueryReq;
 import com.jinkun.cloud_monitor.domain.vo.TemplateVo;
 
-import java.util.List;
-
 public interface ITemplateService {
 
-    List<TemplateVo> selectList(TemplateQueryReq req);
+    PageInfo<TemplateVo> selectList(TemplateQueryReq req);
+
+    TemplateDetail get(TemplateDetailReq req);
+
+    Boolean update(TemplateUnpdateReq req);
+
+    boolean updateTemplateLable(TemplateLableDetailReq req);
+
+    boolean deleteOne(TemplateLableDeleteReq req);
+
+    boolean copyTemplate(TemplateCopyReq req);
 }
