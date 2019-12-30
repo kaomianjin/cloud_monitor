@@ -44,6 +44,12 @@ public class InterceptingExceptionHandler {
         return ResultInfo.failedResultInfo("系统繁忙,请稍后重试");
     }
 
+    @ExceptionHandler(value = RuntimeException.class)
+    public ResultInfo runErrorHandler(HttpServletRequest req, RuntimeException e) {
+        log.error("全局异常拦截器 运行异常  {} 请求地址 {}  /  异常信息  {}", e, req.getRequestURL(), e.getMessage());
+        return ResultInfo.failedResultInfo(e.getMessage());
+    }
+
     @ExceptionHandler(value = Exception.class)
     public ResultInfo<Boolean> exception(Exception e) {
         return ResultInfo.failedResultInfo(e.getMessage());

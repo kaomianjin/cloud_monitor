@@ -1,4 +1,4 @@
-package com.jinkun.cloud_monitor.domain.po;
+package com.jinkun.cloud_monitor.domain.request;
 
 import lombok.Data;
 

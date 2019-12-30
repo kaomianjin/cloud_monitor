@@ -1,7 +1,8 @@
-package com.jinkun.cloud_monitor.domain.po;
+package com.jinkun.cloud_monitor.domain.vo;
 
 import com.jinkun.cloud_monitor.constant.CloudConstant;
 import com.jinkun.cloud_monitor.domain.bean.CloudDatasource;
+import com.jinkun.cloud_monitor.domain.po.CloudDataSourceDetail;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -15,7 +16,7 @@ import org.springframework.beans.BeanUtils;
  */
 @NoArgsConstructor
 @Data
-public class CloudDataSourceDetailVo extends CloudDataSourceDetail{
+public class CloudDataSourceDetailVo extends CloudDataSourceDetail {
 
     private Long id;
 

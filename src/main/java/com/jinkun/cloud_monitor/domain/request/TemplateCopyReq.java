@@ -1,9 +1,9 @@
-package com.jinkun.cloud_monitor.domain.po;
+package com.jinkun.cloud_monitor.domain.request;
 
 import com.jinkun.cloud_monitor.domain.bean.TemplateLable;
+import com.jinkun.cloud_monitor.domain.request.TemplateUnpdateReq;
 import lombok.Data;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /***
@@ -14,7 +14,7 @@ import java.util.List;
  * @version : V1.0
  */
 @Data
-public class TemplateCopyReq extends TemplateUnpdateReq{
+public class TemplateCopyReq extends TemplateUnpdateReq {
 
     private List<TemplateLable> templateLableList;
 }

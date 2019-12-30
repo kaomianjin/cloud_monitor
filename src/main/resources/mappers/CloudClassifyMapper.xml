@@ -13,6 +13,11 @@
   <sql id="Base_Column_List" >
     id, name, status, cloud_service_id, cloud_components_id, template_id, description
   </sql>
+  <select id="selectIds" resultMap="BaseResultMap">
+    select
+        <include refid="Base_Column_List" />
+    from cloud_classify
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

@@ -7,10 +7,10 @@ import com.jinkun.cloud_monitor.dao.*;
 import com.jinkun.cloud_monitor.domain.bean.Template;
 import com.jinkun.cloud_monitor.domain.bean.TemplateLable;
 import com.jinkun.cloud_monitor.domain.po.*;
-import com.jinkun.cloud_monitor.domain.request.TemplateDetailReq;
-import com.jinkun.cloud_monitor.domain.request.TemplateQueryReq;
+import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.TemplateVo;
 import com.jinkun.cloud_monitor.service.ITemplateService;
+import com.jinkun.cloud_monitor.utils.AssertUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +59,8 @@ public class TemplateServiceImpl implements ITemplateService {
 
     @Override
     public Boolean update(TemplateUnpdateReq req) {
+        boolean repetition=templateMapper.selectRepetitionByReq(req)>0;
+        AssertUtil.isTrue(repetition,"模板名重复");
         Template template=new Template();
         BeanUtils.copyProperties(req,template);
         return  templateMapper.updateByPrimaryKeySelective(template)==1;
@@ -66,19 +68,25 @@ public class TemplateServiceImpl implements ITemplateService {
 
     @Override
     public boolean updateTemplateLable(TemplateLableDetailReq req) {
+
+        boolean repetition=templateLableMapper.countUpRepetitionByReq(req)>0;
+        AssertUtil.isTrue(repetition,"该模板下此标签已存在");
+
         TemplateLable templateLable=new TemplateLable();
         BeanUtils.copyProperties(req,templateLable);
         return templateLableMapper.updateByPrimaryKeySelective(templateLable)==1;
     }
 
     @Override
-    public boolean deleteOne(TemplateLableDeleteReq req) {
+    public boolean deleteTemplateLableOne(TemplateLableDeleteReq req) {
 
         return templateLableMapper.deleteByPrimaryKey(req.getId())==1;
     }
 
     @Override
     public boolean copyTemplate(TemplateCopyReq req) {
+        boolean repetition=templateMapper.selectOneByName(req.getName())>0;
+        AssertUtil.isTrue(repetition,"模板名重复");
         Template template=copy(req);
         boolean tempAdd=templateMapper.insert(template)==1;
         boolean lableAdd=true;
@@ -86,6 +94,27 @@ public class TemplateServiceImpl implements ITemplateService {
             lableAdd=templateLableMapper.insertBatch(req.getTemplateLableList()) == req.getTemplateLableList().size();
         }
         return tempAdd&&lableAdd;
+    }
+
+    @Override
+    public boolean deleteTemplates(TemplateDeleteReq req) {
+        if (req.getIds().size()==0){
+            return true;
+        }
+        List<Long>templateIds=templateMapper.selectTemplateIdsClassifyTemplate(req.getIds());
+        AssertUtil.isTrue(templateIds.size()==req.getIds().size(),"所有删除项都存在关联的分类");
+        req.getIds().removeAll(templateIds);
+        if (req.getIds().size()==0){
+            return true;
+        }
+        return templateMapper.deleteBatchByIds(req.getIds())==req.getIds().size();
+    }
+
+    @Override
+    public boolean addTemplateLable(TemplateLableAddReq req) {
+        boolean repetition=templateLableMapper.countAddRepetitionByReq(req)>0;
+        AssertUtil.isTrue(repetition,"该模板下此标签已存在");
+        return templateLableMapper.insert(new TemplateLable(req))==1;
     }
 
     private Template copy(TemplateUnpdateReq req) {

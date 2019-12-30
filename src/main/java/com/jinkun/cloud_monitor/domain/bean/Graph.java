@@ -1,43 +1,50 @@
 package com.jinkun.cloud_monitor.domain.bean;
 
+import com.alibaba.fastjson.JSON;
+import com.jinkun.cloud_monitor.constant.GraphConfigEnum;
+import com.jinkun.cloud_monitor.domain.request.GraphAddReq;
+import com.jinkun.cloud_monitor.domain.request.GraphUpdateReq;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
+
+@NoArgsConstructor
+@Data
 public class Graph {
     private Long id;
 
     private Integer type;
 
+    private String name;
+
+    private Long templateId;
+
     private String description;
 
     private String configuration;
 
-    public Long getId() {
-        return id;
+
+    public Graph(GraphUpdateReq req){
+        BeanUtils.copyProperties(req,this);
+
+        if (GraphConfigEnum.GRAPH_TIMESERIES_CONFIG.getType().equals(req.getType())){
+            this.configuration=JSON.toJSONString(req.getGraphTimeSeriesConfig());
+        }else if (GraphConfigEnum.GRAPH_PIE_CONFIG.getType().equals(req.getType())){
+            this.configuration=JSON.toJSONString(req.getGraphPieConfig());
+        }else if (GraphConfigEnum.GRAPH_MONODROME_CONFIG.getType().equals(req.getType())){
+            this.configuration=JSON.toJSONString(req.getGraphMonodromeConfig());
+        }
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Graph(GraphAddReq req){
+        BeanUtils.copyProperties(req,this);
 
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
-    }
-
-    public String getConfiguration() {
-        return configuration;
-    }
-
-    public void setConfiguration(String configuration) {
-        this.configuration = configuration == null ? null : configuration.trim();
+        if (GraphConfigEnum.GRAPH_TIMESERIES_CONFIG.getType().equals(req.getType())){
+            this.configuration=JSON.toJSONString(req.getGraphTimeSeriesConfig());
+        }else if (GraphConfigEnum.GRAPH_PIE_CONFIG.getType().equals(req.getType())){
+            this.configuration=JSON.toJSONString(req.getGraphPieConfig());
+        }else if (GraphConfigEnum.GRAPH_MONODROME_CONFIG.getType().equals(req.getType())){
+            this.configuration=JSON.toJSONString(req.getGraphMonodromeConfig());
+        }
     }
 }

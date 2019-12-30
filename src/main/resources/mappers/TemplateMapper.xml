@@ -17,6 +17,32 @@
     id, name, cloud_type_id, cloud_components_id, type, description, create_time, update_time, 
     operator, deleted
   </sql>
+    <select id="selectRepetitionByReq" resultType="int">
+        SELECT
+            count( 1 )
+        FROM
+            template
+        WHERE
+            NAME = #{req.name}
+            AND id !=#{req.id}
+    </select>
+    <select id="selectOneByName" resultType="int">
+        select count(1) from template where name=#{name}
+    </select>
+    <delete id="deleteBatchByIds">
+        DELETE FROM template WHERE id in(
+        <foreach collection="ids" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <select id="selectTemplateIdsClassifyTemplate" resultType="long">
+        SELECT template_id FROM `cloud_classify_template` WHERE template_id in(
+        <foreach collection="ids" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
     <select id="selectIdsByParameter" resultType="long">
         SELECT
             id

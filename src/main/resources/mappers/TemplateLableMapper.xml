@@ -9,6 +9,15 @@
   <sql id="Base_Column_List" >
     id, name, template_id
   </sql>
+  <select id="countUpRepetitionByReq" resultType="int">
+    SELECT COUNT(1) FROM template_lable WHERE `name`=#{req.name}
+     AND template_id=#{req.templateId}
+     AND id!=#{req.id}
+  </select>
+  <select id="countAddRepetitionByReq" resultType="int">
+    SELECT COUNT(1) FROM template_lable WHERE `name`=#{req.name}
+     AND template_id=#{req.templateId}
+  </select>
   <insert id="insertBatch" >
     insert into template_lable (name, template_id)
     values

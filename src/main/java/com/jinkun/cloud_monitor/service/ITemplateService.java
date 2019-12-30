@@ -2,8 +2,7 @@ package com.jinkun.cloud_monitor.service;
 
 import com.github.pagehelper.PageInfo;
 import com.jinkun.cloud_monitor.domain.po.*;
-import com.jinkun.cloud_monitor.domain.request.TemplateDetailReq;
-import com.jinkun.cloud_monitor.domain.request.TemplateQueryReq;
+import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.TemplateVo;
 
 public interface ITemplateService {
@@ -16,7 +15,11 @@ public interface ITemplateService {
 
     boolean updateTemplateLable(TemplateLableDetailReq req);
 
-    boolean deleteOne(TemplateLableDeleteReq req);
+    boolean deleteTemplateLableOne(TemplateLableDeleteReq req);
 
     boolean copyTemplate(TemplateCopyReq req);
+
+    boolean deleteTemplates(TemplateDeleteReq req);
+
+    boolean addTemplateLable(TemplateLableAddReq req);
 }

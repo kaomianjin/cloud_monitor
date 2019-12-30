@@ -1,7 +1,7 @@
 package com.jinkun.cloud_monitor.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.jinkun.cloud_monitor.domain.po.CloudDataSourceDetailVo;
+import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceDetailVo;
 import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceVo;
 import com.jinkun.cloud_monitor.domain.vo.ResultInfo;

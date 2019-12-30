@@ -10,7 +10,7 @@ import com.jinkun.cloud_monitor.dao.CloudServiceMapper;
 import com.jinkun.cloud_monitor.dao.CloudTypeMapper;
 import com.jinkun.cloud_monitor.domain.bean.CloudDatasource;
 import com.jinkun.cloud_monitor.domain.po.AliyunVerify;
-import com.jinkun.cloud_monitor.domain.po.CloudDataSourceDetailVo;
+import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceDetailVo;
 import com.jinkun.cloud_monitor.domain.po.HuaweiVerify;
 import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceVo;
