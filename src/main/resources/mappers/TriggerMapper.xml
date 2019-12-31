@@ -14,13 +14,6 @@
   <sql id="Base_Column_List" >
     id, monitor_items_id, name, grade, diaplay_name, status, expression, multiple_events
   </sql>
-  <select id="selectListByParameter" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from trigger
-    WHERE
-
-  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

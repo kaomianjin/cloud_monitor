@@ -1,6 +1,9 @@
 package com.jinkun.cloud_monitor.dao;
 
 import com.jinkun.cloud_monitor.domain.bean.CloudComponents;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface CloudComponentsMapper {
     int deleteByPrimaryKey(Long id);
@@ -14,4 +17,6 @@ public interface CloudComponentsMapper {
     int updateByPrimaryKeySelective(CloudComponents record);
 
     int updateByPrimaryKey(CloudComponents record);
+
+    List<CloudComponents> selectComponentsBycloudServiceId(@Param("cloudServiceId") Long cloudServiceId);
 }

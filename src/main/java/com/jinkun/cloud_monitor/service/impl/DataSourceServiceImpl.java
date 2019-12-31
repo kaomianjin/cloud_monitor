@@ -97,8 +97,10 @@ public class DataSourceServiceImpl implements IDataSourceService {
     public PageInfo<CloudDataSourceVo> selectList(DataSourceQueryAllReq req) {
         PageHelper.startPage(req.getPageNum(),req.getPageSize());
         List<CloudDatasource> entities=cloudDatasourceMapper.queryByParams(req);
+        PageInfo info=new PageInfo(entities);
         List<CloudDataSourceVo> cloudDataSourceVos=cloudDataSourceVosList(entities);
-        return new PageInfo<>(cloudDataSourceVos);
+        info.setList(cloudDataSourceVos);
+        return info;
     }
 
     @Override

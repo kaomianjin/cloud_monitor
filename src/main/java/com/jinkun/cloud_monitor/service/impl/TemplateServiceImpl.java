@@ -39,13 +39,13 @@ public class TemplateServiceImpl implements ITemplateService {
 
         PageHelper.startPage(req.getPageNum(),req.getPageSize());
         List<Long>ids=templateMapper.selectIdsByParameter(req);
-        List<TemplateVo>templateVos;
-        if(ids.size()==0){
-            templateVos=new ArrayList<>();
-        }else{
+        PageInfo info=new PageInfo(ids);
+        List<TemplateVo>templateVos=new ArrayList<>();
+        if(ids.size()!=0){
             templateVos=templateMapper.selectListVoByParameter(ids);
         }
-        return new PageInfo<>(templateVos);
+        info.setList(templateVos);
+        return info;
     }
 
     @Override

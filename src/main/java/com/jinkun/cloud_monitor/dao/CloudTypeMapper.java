@@ -2,6 +2,8 @@ package com.jinkun.cloud_monitor.dao;
 
 import com.jinkun.cloud_monitor.domain.bean.CloudType;
 
+import java.util.List;
+
 public interface CloudTypeMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -14,4 +16,6 @@ public interface CloudTypeMapper {
     int updateByPrimaryKeySelective(CloudType record);
 
     int updateByPrimaryKey(CloudType record);
+
+    List<CloudType> selectAll();
 }

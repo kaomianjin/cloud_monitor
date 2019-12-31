@@ -6,6 +6,7 @@ import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceVo;
 import com.jinkun.cloud_monitor.domain.vo.ResultInfo;
 import com.jinkun.cloud_monitor.service.IDataSourceService;
+import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -18,6 +19,7 @@ import javax.annotation.Resource;
  * @version : V1.0
  */
 @RestController
+@Api(value = "数据源", tags = {"云监控数据源"})
 @RequestMapping("dataSource")
 public class DataSourceController {
 

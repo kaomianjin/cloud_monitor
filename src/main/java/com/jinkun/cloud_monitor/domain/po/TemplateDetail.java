@@ -27,7 +27,7 @@ public class TemplateDetail {
 
     private List<TemplateLable> templateLableList;
 
-    public TemplateDetail(Template template,List<TemplateLable> templateLableList){
+    public TemplateDetail(Template template, List<TemplateLable> templateLableList){
         BeanUtils.copyProperties(template,this);
         this.templateLableList=templateLableList;
     }

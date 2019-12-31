@@ -1,6 +1,5 @@
 package com.jinkun.cloud_monitor.domain.vo;
 
-import io.swagger.models.auth.In;
 import lombok.Data;
 
 /***
@@ -16,6 +15,8 @@ public class ClassifyVo {
     private Long id;
 
     private String name;
+
+    private Integer status;
 
     private String cloudServiceName;
 

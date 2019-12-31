@@ -1,6 +1,9 @@
 package com.jinkun.cloud_monitor.controller;
 
+import com.github.pagehelper.PageInfo;
+import com.jinkun.cloud_monitor.domain.bean.Demo;
 import com.jinkun.cloud_monitor.domain.request.DemoQuery;
+import com.jinkun.cloud_monitor.domain.vo.ResultInfo;
 import com.jinkun.cloud_monitor.service.IDemoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +33,7 @@ public class DemoController {
     }
 
     @RequestMapping("/all")
-    public Object selectList(@RequestBody DemoQuery query){
-        return demoService.selectList(query).getList();
+    public ResultInfo<PageInfo<Demo>> selectList(@RequestBody DemoQuery query){
+        return ResultInfo.successResultInfo(demoService.selectList(query));
     }
 }

@@ -9,6 +9,12 @@
   <sql id="Base_Column_List" >
     id, name, cloud_type_id
   </sql>
+  <select id="selectByTypeId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cloud_service
+    where cloud_type_id = #{cloudTypeId,jdbcType=BIGINT}
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

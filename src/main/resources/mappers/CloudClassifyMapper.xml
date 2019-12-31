@@ -7,15 +7,98 @@
     <result column="status" property="status" jdbcType="BIT" />
     <result column="cloud_service_id" property="cloudServiceId" jdbcType="BIGINT" />
     <result column="cloud_components_id" property="cloudComponentsId" jdbcType="BIGINT" />
-    <result column="template_id" property="templateId" jdbcType="BIGINT" />
     <result column="description" property="description" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, status, cloud_service_id, cloud_components_id, template_id, description
+    id, name, status, cloud_service_id, cloud_components_id, description
   </sql>
-  <select id="selectIds" resultMap="BaseResultMap">
+  <delete id="deleteBatchByIds">
+    DELETE FROM cloud_classify WHERE id in(
+    <foreach collection="ids" item="item" separator=",">
+      #{item}
+    </foreach>
+    )
+  </delete>
+  <select id="selectClassifyResourceByClassifyIds" resultType="long">
+    SELECT classify_id FROM `cloud_resource_classify` WHERE classify_id in(
+    <foreach collection="ids" item="item" separator=",">
+      #{item}
+    </foreach>
+    )
+  </select>
+  <insert id="inserClassifyTemplate">
+    insert into cloud_classify_template (template_id, classify_id)
+    values (#{templateId,jdbcType=BIGINT}, #{classifyId,jdbcType=BIGINT})
+  </insert>
+  <select id="countUpRepetitionByReq" resultType="int">
+    SELECT COUNT(1) FROM cloud_classify WHERE `name`=#{req.name}
+    <if test="req.id != null">
+        AND id!=#{req.id}
+    </if>
+  </select>
+  <select id="selectTemplateByPrimaryKey" resultType="com.jinkun.cloud_monitor.domain.bean.Template">
+    SELECT
+        id, name, cloud_type_id cloudTypeId,cloud_service_id cloudServiceId, cloud_components_id cloudComponentsId, type, description
+    FROM
+        template
+    WHERE
+        id IN ( SELECT template_id FROM cloud_classify_template WHERE classify_id = #{id} )
+  </select>
+  <select id="selectListVoByParameter" resultType="com.jinkun.cloud_monitor.domain.vo.ClassifyVo">
+      SELECT s.id,GROUP_CONCAT(s.classifyName)  `name`,sum(s.`status`) `status`,GROUP_CONCAT(s.cloudServiceName) cloudServiceName,GROUP_CONCAT(s.componentsName) componentName,GROUP_CONCAT(s.templateName) templateName,sum(s.resourceNumber) resourceNumber
+
+      FROM(
+      SELECT  id, `name` classifyName,`status`,null cloudServiceName,null componentsName ,
+      NULL templateName,null resourceNumber
+      FROM   cloud_classify  WHERE id in (
+      <foreach collection="ids" item="item" separator=",">
+        #{item}
+      </foreach>
+      ) GROUP BY id
+
+      UNION ALL
+
+      SELECT cc.id id,null classifyName,null `status`,cs.`name` cloudServiceName,null componentsName ,NULL templateName,null resourceNumber
+      FROM  cloud_classify  cc LEFT JOIN cloud_service cs ON cc.cloud_service_id=cs.id WHERE cc.id in (
+      <foreach collection="ids" item="item" separator=",">
+        #{item}
+      </foreach>
+      )  GROUP BY cc.id
+
+      UNION ALL
+      SELECT cc.id id,null classifyName,null `status`,null cloudServiceName,ccs.`name` componentsName,NULL templateName,null resourceNumber
+      FROM  cloud_classify  cc LEFT JOIN cloud_components ccs ON cc.cloud_components_id=ccs.id WHERE cc.id in (
+      <foreach collection="ids" item="item" separator=",">
+        #{item}
+      </foreach>
+      )  GROUP BY cc.id
+
+      UNION ALL
+
+      SELECT cc.id id,null classifyName,null `status`,null cloudServiceName,NULL componentsName,GROUP_CONCAT(t.`name`) templateName,null resourceNumber
+      FROM  cloud_classify  cc LEFT JOIN cloud_classify_template cct ON cc.id=cct.classify_id LEFT JOIN template t ON cct.template_id=t.id
+      WHERE cc.id in (
+      <foreach collection="ids" item="item" separator=",">
+        #{item}
+      </foreach>
+      )
+        GROUP BY cc.id
+
+      UNION ALL
+
+      SELECT cc.id id,null classifyName,null `status`,null cloudServiceName,NULL componentsName,null templateName,count(1) resourceNumber
+      FROM cloud_classify cc LEFT JOIN cloud_resource_classify crc
+      ON cc.id=crc.classify_id
+      WHERE cc.id in (
+      <foreach collection="ids" item="item" separator=",">
+        #{item}
+      </foreach>
+      )
+      GROUP BY cc.id ) s GROUP BY id
+  </select>
+  <select id="selectIds" resultType="long">
     select
-        <include refid="Base_Column_List" />
+        id
     from cloud_classify
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -28,12 +111,12 @@
     delete from cloud_classify
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.jinkun.cloud_monitor.domain.bean.CloudClassify" >
+  <insert id="insert" parameterType="com.jinkun.cloud_monitor.domain.bean.CloudClassify" useGeneratedKeys="true" keyProperty="id" >
     insert into cloud_classify (id, name, status, 
-      cloud_service_id, cloud_components_id, template_id, 
+      cloud_service_id, cloud_components_id,
       description)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{status,jdbcType=BIT}, 
-      #{cloudServiceId,jdbcType=BIGINT}, #{cloudComponentsId,jdbcType=BIGINT}, #{templateId,jdbcType=BIGINT}, 
+      #{cloudServiceId,jdbcType=BIGINT}, #{cloudComponentsId,jdbcType=BIGINT},
       #{description,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.jinkun.cloud_monitor.domain.bean.CloudClassify" >
@@ -53,9 +136,6 @@
       </if>
       <if test="cloudComponentsId != null" >
         cloud_components_id,
-      </if>
-      <if test="templateId != null" >
-        template_id,
       </if>
       <if test="description != null" >
         description,
@@ -100,9 +180,6 @@
       <if test="cloudComponentsId != null" >
         cloud_components_id = #{cloudComponentsId,jdbcType=BIGINT},
       </if>
-      <if test="templateId != null" >
-        template_id = #{templateId,jdbcType=BIGINT},
-      </if>
       <if test="description != null" >
         description = #{description,jdbcType=VARCHAR},
       </if>
@@ -115,7 +192,6 @@
       status = #{status,jdbcType=BIT},
       cloud_service_id = #{cloudServiceId,jdbcType=BIGINT},
       cloud_components_id = #{cloudComponentsId,jdbcType=BIGINT},
-      template_id = #{templateId,jdbcType=BIGINT},
       description = #{description,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>

@@ -6,6 +6,9 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
-
 mybatis:
   mapper-locations: classpath:/mappers/*
+
+swagger:
+  show: true
+
