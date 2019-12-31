@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinkun.cloud_monitor.dao.GraphMapper" >
+  <resultMap id="BaseResultMap" type="com.jinkun.cloud_monitor.domain.bean.Graph" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="template_id" property="templateId" jdbcType="BIGINT" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="configuration" property="configuration" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, type, name, template_id, description, configuration
+  </sql>
+  <delete id="deleteBatchByIds">
+    DELETE  FROM graph WHERE id in(
+    <foreach collection="ids" separator="," item="item">
+      #{item}
+    </foreach>
+    )
+  </delete>
+  <select id="verifyRepeat" resultType="int">
+    SELECT count(1) FROM graph WHERE template_id=#{graph.templateId} AND `name`=#{templateId.name}
+    <if test="graph.id != null ">
+      AND id!=#{graph.id}
+    </if>
+  </select>
+  <select id="selectListVoByParameter" resultType="com.jinkun.cloud_monitor.domain.vo.GraphVo">
+    SELECT
+        g.id id,g.template_id templateId,g.type type,count(gm.id) monitorNumber,g.`name`
+    FROM
+        graph AS g
+        LEFT JOIN  graph_monitor_items AS gm ON g.id = gm.graph_id
+    WHERE
+        g.id in (
+        <foreach collection="ids" item="item" separator=",">
+          #{item}
+        </foreach>
+        )
+    GROUP BY g.id
+  </select>
+  <select id="selectIdsByParameter" resultType="long">
+    SELECT id FROM graph WHERE template_id=#{req.templateId}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from graph
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from graph
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.jinkun.cloud_monitor.domain.bean.Graph" >
+    insert into graph (id, type, name, 
+      template_id, description, configuration
+      )
+    values (#{id,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{templateId,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{configuration,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jinkun.cloud_monitor.domain.bean.Graph" >
+    insert into graph
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="templateId != null" >
+        template_id,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="configuration != null" >
+        configuration,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="templateId != null" >
+        #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="configuration != null" >
+        #{configuration,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jinkun.cloud_monitor.domain.bean.Graph" >
+    update graph
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="templateId != null" >
+        template_id = #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="configuration != null" >
+        configuration = #{configuration,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jinkun.cloud_monitor.domain.bean.Graph" >
+    update graph
+    set type = #{type,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      template_id = #{templateId,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      configuration = #{configuration,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
