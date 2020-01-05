@@ -43,7 +43,7 @@ public class GraphServiceImpl implements IGraphService {
     }
 
     @Override
-    public GraphDetail getDetail(GraphDetailReq req) {
+    public GraphDetail getDetail(GraphGetReq req) {
 
         Graph graph=graphMapper.selectByPrimaryKey(req.getId());
 

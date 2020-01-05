@@ -1,23 +1,17 @@
 package com.jinkun.cloud_monitor.domain.bean;
 
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+@Data
 public class CloudType {
+
+    @ApiModelProperty(value = "cloudTypeId",required = true,name = "id", dataType = "Long", example = "1")
     private Long id;
 
+    @ApiModelProperty(value = "cloudType名称",required = true,name = "name", dataType = "String", example = "公有云")
     private String name;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
+    @ApiModelProperty(value = "是否启用",required = true,name = "Boolean", dataType = "status", example = "1启用,0禁用")
+    private Boolean status;
 }

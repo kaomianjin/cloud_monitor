@@ -7,14 +7,14 @@ import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceVo;
 
 public interface IDataSourceService {
 
-    boolean save(DataSourceReq req);
+    boolean save(DataSourceSaveReq req);
 
     boolean update(DataSourceUpdateReq req);
 
     boolean delete(DataSourceDeleteReq req);
 
-    PageInfo<CloudDataSourceVo> selectList(DataSourceQueryAllReq req);
+    PageInfo<CloudDataSourceVo> selectList(DataSourceQueryReq req);
 
-    CloudDataSourceDetailVo selectOne(DataSourceQueryOneReq req);
+    CloudDataSourceDetailVo selectOne(DataSourceGetReq req);
 
 }

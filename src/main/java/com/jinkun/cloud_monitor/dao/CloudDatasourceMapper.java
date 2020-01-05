@@ -1,7 +1,8 @@
 package com.jinkun.cloud_monitor.dao;
 
 import com.jinkun.cloud_monitor.domain.bean.CloudDatasource;
-import com.jinkun.cloud_monitor.domain.request.DataSourceQueryAllReq;
+import com.jinkun.cloud_monitor.domain.request.DataSourceQueryReq;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface CloudDatasourceMapper {
 
     int updateByPrimaryKey(CloudDatasource record);
 
-    List<CloudDatasource> queryByParams(DataSourceQueryAllReq req);
+    List<CloudDatasource> queryByParams(@Param("req") DataSourceQueryReq req);
 
-    int deleteBatchByIds(List<Long> ids);
+    int deleteBatchByIds(@Param("ids")List<Long> ids);
 }

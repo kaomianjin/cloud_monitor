@@ -1,5 +1,13 @@
 package com.jinkun.cloud_monitor.domain.bean;
 
+import com.alibaba.fastjson.JSON;
+import com.jinkun.cloud_monitor.domain.request.TriggerDetailReq;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
+
+@Data
+@NoArgsConstructor
 public class Trigger {
     private Integer id;
 
@@ -15,69 +23,10 @@ public class Trigger {
 
     private String expression;
 
-    private Byte multipleEvents;
+    private Boolean multipleEvents;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Long getMonitorItemsId() {
-        return monitorItemsId;
-    }
-
-    public void setMonitorItemsId(Long monitorItemsId) {
-        this.monitorItemsId = monitorItemsId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public String getGrade() {
-        return grade;
-    }
-
-    public void setGrade(String grade) {
-        this.grade = grade == null ? null : grade.trim();
-    }
-
-    public String getDiaplayName() {
-        return diaplayName;
-    }
-
-    public void setDiaplayName(String diaplayName) {
-        this.diaplayName = diaplayName == null ? null : diaplayName.trim();
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public String getExpression() {
-        return expression;
-    }
-
-    public void setExpression(String expression) {
-        this.expression = expression == null ? null : expression.trim();
-    }
-
-    public Byte getMultipleEvents() {
-        return multipleEvents;
-    }
-
-    public void setMultipleEvents(Byte multipleEvents) {
-        this.multipleEvents = multipleEvents;
+    public Trigger(TriggerDetailReq req){
+        BeanUtils.copyProperties(req,this);
+        this.expression= JSON.toJSONString(req.getTriggerRule());
     }
 }

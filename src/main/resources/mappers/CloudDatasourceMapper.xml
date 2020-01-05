@@ -18,8 +18,18 @@
     id, cloud_type_id, cloud_service_id, name, verification_information, status, create_time, 
     update_time, operator, deleted,description
   </sql>
+  <select id="queryByParams" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cloud_datasource
+  </select>
   <delete id="deleteBatchByIds">
-
+      DELETE FROM  cloud_datasource
+      WHERE id in (
+      <foreach collection="ids" item="item" separator=",">
+        #{item}
+      </foreach>
+      )
   </delete>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 

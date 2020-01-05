@@ -17,23 +17,24 @@ import javax.validation.constraints.NotNull;
 @Data
 public class CloudDataSourceDetail {
 
-    @NotNull(message = "登录名不能为空")
-    @ApiModelProperty(value = "云类型id", dataType = "long", example = "公有云:1;私有云:2")
+    @NotNull(message = "CloudType对象不能为空")
+    @ApiModelProperty(value = "CloudType对象",required = true,name = "CloudType", dataType = "cloudType", example = "见数据结构")
     private CloudType cloudType;
-    @NotNull(message = "登录名不能为空")
-    @ApiModelProperty(value = "云服务商id", dataType = "long",  example = "阿里云1;华为云2")
+    @NotNull(message = "CloudService不能为空")
+    @ApiModelProperty(value = "CloudService对象",required = true,name = "cloudService",dataType = "CloudService",  example = "见数据结构")
     private CloudService cloudService;
-    @NotNull(message = "登录名不能为空")
-    @ApiModelProperty(value = "名称", dataType = "string", example = "第一个数据源")
+    @NotNull(message = "名称不能为空")
+    @ApiModelProperty(value = "名称",required = true, dataType = "string", example = "第一个数据源")
     private String name;
-    @NotNull(message = "登录名不能为空")
-    @ApiModelProperty(value = "启用", dataType = "string", example = "ture")
+    @NotNull(message = "启用状态不能为空")
+    @ApiModelProperty(value = "启用",required = true, dataType = "Boolean", example = "ture")
     private Boolean status;
-    @NotNull(message = "登录名不能为空")
-    @ApiModelProperty(value = "描述", dataType = "string", example = "这是不一样的数据源")
+    @ApiModelProperty(value = "描述",required = true, dataType = "string", example = "这是数据源描述")
     private String description;
 
+    @ApiModelProperty(value = "华为云账户登录信息", dataType = "HuaweiVerify", example = "见数据结构")
     private HuaweiVerify  huaweiVerify;
 
+    @ApiModelProperty(value = "阿里云账户登录信息", dataType = "AliyunVerify", example = "见数据结构")
     private AliyunVerify aliyunVerify;
 }

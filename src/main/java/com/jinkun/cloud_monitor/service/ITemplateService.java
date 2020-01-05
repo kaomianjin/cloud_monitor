@@ -9,9 +9,9 @@ public interface ITemplateService {
 
     PageInfo<TemplateVo> selectList(TemplateQueryReq req);
 
-    TemplateDetail get(TemplateDetailReq req);
+    TemplateDetail get(TemplateGetReq req);
 
-    Boolean update(TemplateUnpdateReq req);
+    Boolean update(TemplateUpdateReq req);
 
     boolean updateTemplateLable(TemplateLableDetailReq req);
 

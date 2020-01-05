@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jinkun.cloud_monitor.constant.TemplateEnum;
 import com.jinkun.cloud_monitor.dao.*;
+import com.jinkun.cloud_monitor.domain.bean.CloudMonitorItems;
 import com.jinkun.cloud_monitor.domain.bean.Template;
 import com.jinkun.cloud_monitor.domain.bean.TemplateLable;
 import com.jinkun.cloud_monitor.domain.po.*;
@@ -33,6 +34,8 @@ public class TemplateServiceImpl implements ITemplateService {
     private TemplateMapper templateMapper;
     @Resource
     private TemplateLableMapper templateLableMapper;
+    @Resource
+    private CloudMonitorItemsMapper cloudMonitorItemsMapper;
 
     @Override
     public PageInfo<TemplateVo> selectList(TemplateQueryReq req) {
@@ -49,7 +52,7 @@ public class TemplateServiceImpl implements ITemplateService {
     }
 
     @Override
-    public TemplateDetail get(TemplateDetailReq req) {
+    public TemplateDetail get(TemplateGetReq req) {
 
         Template template=templateMapper.selectByPrimaryKey(req.getId());
         List<TemplateLable> templateLableList=templateLableMapper.selectListByTemplateId(req.getId());
@@ -58,7 +61,7 @@ public class TemplateServiceImpl implements ITemplateService {
     }
 
     @Override
-    public Boolean update(TemplateUnpdateReq req) {
+    public Boolean update(TemplateUpdateReq req) {
         boolean repetition=templateMapper.selectRepetitionByReq(req)>0;
         AssertUtil.isTrue(repetition,"模板名重复");
         Template template=new Template();
@@ -87,13 +90,30 @@ public class TemplateServiceImpl implements ITemplateService {
     public boolean copyTemplate(TemplateCopyReq req) {
         boolean repetition=templateMapper.selectOneByName(req.getName())>0;
         AssertUtil.isTrue(repetition,"模板名重复");
+
+        Template builtIn=templateMapper.selectByPrimaryKey(req.getId());
+        AssertUtil.isTrue(builtIn==null,"内置模板不存在");
+        AssertUtil.isTrue(builtIn.getType()!=TemplateEnum.BUILT_IN_TEMPLATE.getType(),"id参数异常");
+
         Template template=copy(req);
-        boolean tempAdd=templateMapper.insert(template)==1;
+        boolean templateAdd=templateMapper.insert(template)==1;
+
+        List<CloudMonitorItems> monitorItems=cloudMonitorItemsMapper.selectList(req.getId());
+        monitorItems.forEach(temp ->{
+            temp.setTemplateId(template.getId());
+        });
+        boolean monitorItemAdd=cloudMonitorItemsMapper.insertBatch(monitorItems)==monitorItems.size();
+
         boolean lableAdd=true;
+
+        req.getTemplateLableList().forEach(templateLable -> {
+            templateLable.setTemplateId(template.getId());
+        });
+
         if (req.getTemplateLableList().size()!=0) {
             lableAdd=templateLableMapper.insertBatch(req.getTemplateLableList()) == req.getTemplateLableList().size();
         }
-        return tempAdd&&lableAdd;
+        return templateAdd&&lableAdd&&monitorItemAdd;
     }
 
     @Override
@@ -117,7 +137,7 @@ public class TemplateServiceImpl implements ITemplateService {
         return templateLableMapper.insert(new TemplateLable(req))==1;
     }
 
-    private Template copy(TemplateUnpdateReq req) {
+    private Template copy(TemplateCopyReq req) {
         Template template=templateMapper.selectByPrimaryKey(req.getId());
         template.setId(null);
         template.setName(req.getName());

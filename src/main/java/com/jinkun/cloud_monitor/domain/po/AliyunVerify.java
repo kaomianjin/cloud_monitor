@@ -17,6 +17,6 @@ public class AliyunVerify {
     private String key;
     @ApiModelProperty(value = "Secret", dataType = "string", example = "SAFGQXKJQBQWE ")
     private String secret;
-
+    @ApiModelProperty(value = "区域id", dataType = "String", example = "cn-shenzhen")
     private String ragionArea;
 }

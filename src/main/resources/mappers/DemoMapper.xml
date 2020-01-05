@@ -23,7 +23,7 @@
     delete from demo
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.jinkun.cloud_monitor.domain.bean.Demo" >
+  <insert id="insert" parameterType="com.jinkun.cloud_monitor.domain.bean.Demo" useGeneratedKeys="true" keyProperty="id" >
     insert into demo (id, name)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR})
   </insert>

@@ -4,9 +4,10 @@
   <resultMap id="BaseResultMap" type="com.jinkun.cloud_monitor.domain.bean.CloudType" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="BIT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name
+    id, name,`status`
   </sql>
   <select id="selectAll" resultMap="BaseResultMap">
     select

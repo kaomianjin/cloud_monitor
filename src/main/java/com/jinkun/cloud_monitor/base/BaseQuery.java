@@ -1,6 +1,9 @@
 package com.jinkun.cloud_monitor.base;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
 
 /***
  * @ClassName: BaseQuery
@@ -12,6 +15,8 @@ import lombok.Data;
 @Data
 public class BaseQuery {
 
+    @ApiModelProperty(value = "资源分类id", dataType = "Long", name = "id", example = "1")
     private int pageNum=1;
+    @ApiModelProperty(value = "资源分类id", dataType = "Long", name = "id", example = "10")
     private int pageSize=10;
 }

@@ -35,4 +35,13 @@ public class DemoServiceImpl implements IDemoService {
         List<Demo> entities=demoMapper.queryByParams(query);
         return new PageInfo<>(entities);
     }
+
+    @Override
+    public boolean save() {
+
+        Demo demo=new Demo();
+        demoMapper.insert(demo);
+        System.out.println(demo.getId());
+        return true;
+    }
 }

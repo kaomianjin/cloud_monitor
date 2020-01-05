@@ -20,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /***
@@ -43,7 +44,7 @@ public class DataSourceServiceImpl implements IDataSourceService {
 
 
     @Override
-    public boolean save(DataSourceReq req) {
+    public boolean save(DataSourceSaveReq req) {
 
         checkDataSourceCreate(req);
 
@@ -56,7 +57,7 @@ public class DataSourceServiceImpl implements IDataSourceService {
         return true;
     }
 
-    private void checkDataSourceCreate(DataSourceReq req) {
+    private void checkDataSourceCreate(DataSourceSaveReq req) {
         if (CloudConstant.CLOUD_SERVICE_ALI.equals(req.getCloudService().getName())||CloudConstant.CLOUD_SERVICE_HUAWEI.equals(req.getCloudService().getName())){
             return;
         }
@@ -94,7 +95,7 @@ public class DataSourceServiceImpl implements IDataSourceService {
     }
 
     @Override
-    public PageInfo<CloudDataSourceVo> selectList(DataSourceQueryAllReq req) {
+    public PageInfo<CloudDataSourceVo> selectList(DataSourceQueryReq req) {
         PageHelper.startPage(req.getPageNum(),req.getPageSize());
         List<CloudDatasource> entities=cloudDatasourceMapper.queryByParams(req);
         PageInfo info=new PageInfo(entities);
@@ -104,7 +105,7 @@ public class DataSourceServiceImpl implements IDataSourceService {
     }
 
     @Override
-    public CloudDataSourceDetailVo selectOne(DataSourceQueryOneReq req) {
+    public CloudDataSourceDetailVo selectOne(DataSourceGetReq req) {
         CloudDatasource cloudDatasource =cloudDatasourceMapper.selectByPrimaryKey(req.getId());
         return getCloudDataSourceDetailVo(cloudDatasource);
     }
@@ -129,6 +130,10 @@ public class DataSourceServiceImpl implements IDataSourceService {
 
     private List<CloudDataSourceVo> cloudDataSourceVosList(List<CloudDatasource> entities) {
 
-        return null;
+        List<CloudDataSourceVo> cloudDataSourceVos=new ArrayList<>();
+        entities.forEach(temp ->{
+
+        });
+        return cloudDataSourceVos;
     }
 }

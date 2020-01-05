@@ -7,6 +7,7 @@ import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceVo;
 import com.jinkun.cloud_monitor.domain.vo.ResultInfo;
 import com.jinkun.cloud_monitor.service.IDataSourceService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -32,8 +33,9 @@ public class DataSourceController {
      @version : V1.0
      @Description :创建数据源
     */
-    @PostMapping("/one")
-    public ResultInfo<Boolean> createDataSource(@Validated @RequestBody DataSourceReq req){
+    @PostMapping("/save/one")
+    @ApiOperation(value = "新增云监控数据源", notes = "单个保存")
+    public ResultInfo<Boolean> createDataSource(@Validated @RequestBody DataSourceSaveReq req){
 
         return ResultInfo.successResultInfo(dataSourceService.save(req));
     }
@@ -44,8 +46,9 @@ public class DataSourceController {
      @version : V1.0
      @Description : 批量查询
     */
-    @GetMapping("/batch")
-    public ResultInfo<PageInfo<CloudDataSourceVo>> selectList(@Validated @RequestBody DataSourceQueryAllReq req){
+    @PostMapping("/get/batch")
+    @ApiOperation(value = "获取云监控数据源列表", notes = "批量查询")
+    public ResultInfo<PageInfo<CloudDataSourceVo>> selectList(@Validated @RequestBody DataSourceQueryReq req){
 
         return ResultInfo.successResultInfo(dataSourceService.selectList(req));
     }
@@ -56,8 +59,9 @@ public class DataSourceController {
      @version : V1.0
      @Description :获取单个数据源详情
     */
-    @GetMapping("/one")
-    public ResultInfo<CloudDataSourceDetailVo> selectOne(@Validated @RequestBody DataSourceQueryOneReq req){
+    @PostMapping("/get/one")
+    @ApiOperation(value = "获取单个云监控数据源", notes = "获取单个数据源详情")
+    public ResultInfo<CloudDataSourceDetailVo> selectOne(@Validated @RequestBody DataSourceGetReq req){
 
         return ResultInfo.successResultInfo(dataSourceService.selectOne(req));
     }
@@ -68,7 +72,8 @@ public class DataSourceController {
      @version : V1.0
      @Description :更新一个数据源
     */
-    @PutMapping("/one")
+    @PostMapping("/update/one")
+    @ApiOperation(value = "修改单个云监控数据源", notes = "更新一个数据源")
     public ResultInfo<Boolean> updateDataSource(@Validated @RequestBody DataSourceUpdateReq req){
 
         return ResultInfo.successResultInfo(dataSourceService.update(req));
@@ -80,7 +85,8 @@ public class DataSourceController {
      @version : V1.0
      @Description :批量删除数据源
     */
-    @DeleteMapping("/one")
+    @PostMapping("/delete/batch")
+    @ApiOperation(value = "批量删除云监控数据源", notes = "批量删除数据源")
     public ResultInfo<Boolean> deleteDataSource(@Validated @RequestBody DataSourceDeleteReq req){
 
         return ResultInfo.successResultInfo(dataSourceService.delete(req));

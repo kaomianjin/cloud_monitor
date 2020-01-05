@@ -5,6 +5,7 @@ import com.jinkun.cloud_monitor.domain.bean.CloudType;
 import com.jinkun.cloud_monitor.domain.po.AliyunVerify;
 import com.jinkun.cloud_monitor.domain.po.CloudDataSourceDetail;
 import com.jinkun.cloud_monitor.domain.po.HuaweiVerify;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -18,7 +19,10 @@ import javax.validation.constraints.NotNull;
  * @version : V1.0
  */
 @Data
+@ApiModel(value = "数据源配置更新" )
 public class DataSourceUpdateReq extends CloudDataSourceDetail {
 
+    @NotNull(message = "数据源id不能为空")
+    @ApiModelProperty(value = "数据源id", required = true, dataType = "Long", name = "id", example = "1")
     private Long id;
 }

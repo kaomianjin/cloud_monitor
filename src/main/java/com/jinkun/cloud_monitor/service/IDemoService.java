@@ -18,4 +18,6 @@ public interface IDemoService {
     Demo get();
 
     PageInfo<Demo> selectList(DemoQuery query);
+
+    boolean save();
 }

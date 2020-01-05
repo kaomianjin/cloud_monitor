@@ -1,10 +1,16 @@
 package com.jinkun.cloud_monitor.domain.bean;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class CloudComponents {
+
+    @ApiModelProperty(value = "云组件id", required = true, dataType = "Long", name = "id", example = "1")
     private Long id;
 
+    @ApiModelProperty(value = "云组件名称", required = true, dataType = "String", name = "name", example = "这是一个组件名称")
     private String name;
 
+    @ApiModelProperty(value = "云商id", required = true, dataType = "Long", name = "cloudServiceId", example = "1")
     private Long cloudServiceId;
 
     public Long getId() {

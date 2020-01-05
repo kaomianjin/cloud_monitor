@@ -1,15 +1,26 @@
 package com.jinkun.cloud_monitor.domain.bean;
 
 import com.jinkun.cloud_monitor.domain.request.TemplateLableAddReq;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
+import javax.validation.constraints.NotNull;
+
 @NoArgsConstructor
+
+@ApiModel(value = "模板标签对象" )
 public class TemplateLable {
+
+    @ApiModelProperty(value = "模板标签列表", dataType = "Long", name = "id", example = "1/新增不传")
     private Long id;
 
+    @NotNull(message = "名称不能为空")
+    @ApiModelProperty(value = "模板标签名称", dataType = "String", name = "name", example = "这是一个标签名称")
     private String name;
 
+    @ApiModelProperty(value = "模板id", dataType = "Long", name = "templateId", example = "1/copy不传")
     private Long templateId;
 
     public TemplateLable(TemplateLableAddReq req){

@@ -7,6 +7,7 @@ import com.jinkun.cloud_monitor.domain.vo.ResultInfo;
 import com.jinkun.cloud_monitor.service.IDemoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,4 +37,10 @@ public class DemoController {
     public ResultInfo<PageInfo<Demo>> selectList(@RequestBody DemoQuery query){
         return ResultInfo.successResultInfo(demoService.selectList(query));
     }
+
+    @PostMapping("/one")
+    public ResultInfo<Boolean> selectList(){
+        return ResultInfo.result(demoService.save());
+    }
+
 }

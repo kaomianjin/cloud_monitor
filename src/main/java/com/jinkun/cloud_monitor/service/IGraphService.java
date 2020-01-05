@@ -9,7 +9,7 @@ public interface IGraphService {
 
     PageInfo<GraphVo> selectList(GraphQueryReq req);
 
-    GraphDetail getDetail(GraphDetailReq req);
+    GraphDetail getDetail(GraphGetReq req);
 
     boolean saveGraph(GraphAddReq req);
 

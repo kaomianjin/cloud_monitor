@@ -4,6 +4,7 @@ import com.jinkun.cloud_monitor.domain.po.GraphDetail;
 import com.jinkun.cloud_monitor.domain.po.GraphMonodromeConfig;
 import com.jinkun.cloud_monitor.domain.po.GraphPieConfig;
 import com.jinkun.cloud_monitor.domain.po.GraphTimeSeriesConfig;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /***
@@ -14,6 +15,7 @@ import lombok.Data;
  * @version : V1.0
  */
 @Data
+@ApiModel(value = "模板下图表创建" )
 public class GraphAddReq extends GraphDetail {
 
 }
