@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
  * @version : V1.0
  */
 @Data
-@ApiModel(value = "模板标签删除" )
+@ApiModel(value = "模板标签删除req" )
 public class TemplateLableDeleteReq {
 
     @NotNull(message = "模板标签id不能为空")

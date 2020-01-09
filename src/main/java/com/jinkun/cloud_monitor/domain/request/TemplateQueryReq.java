@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  * @version : V1.0
  */
 @Data
-@ApiModel(value = "模板列表分页查询" )
+@ApiModel(value = "模板列表分页查询req" )
 public class TemplateQueryReq extends BaseQuery {
 
     @NotNull(message = "云id不能为空")

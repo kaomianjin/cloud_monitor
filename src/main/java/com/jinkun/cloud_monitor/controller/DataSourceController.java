@@ -1,6 +1,8 @@
 package com.jinkun.cloud_monitor.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.jinkun.cloud_monitor.domain.bean.Area;
+import com.jinkun.cloud_monitor.domain.vo.AreaVo;
 import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceDetailVo;
 import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceVo;
@@ -11,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import java.util.List;
 
 /***
  * @ClassName: DataSourceController
@@ -26,6 +29,12 @@ public class DataSourceController {
 
     @Resource
     private IDataSourceService dataSourceService;
+
+    @PostMapping("/get/area/batch")
+    public ResultInfo<List<Area>> queryAreaVo(@Validated @RequestBody DataSourceAreaQueryReq req){
+
+        return ResultInfo.successResultInfo(dataSourceService.queryAreaVo(req));
+    }
 
     /**
      @Author juzhic
@@ -90,6 +99,12 @@ public class DataSourceController {
     public ResultInfo<Boolean> deleteDataSource(@Validated @RequestBody DataSourceDeleteReq req){
 
         return ResultInfo.successResultInfo(dataSourceService.delete(req));
+    }
+
+    @PostMapping("/verification")
+    public ResultInfo<Boolean> verificationAccount(@Validated @RequestBody DataSourceVerificationReq req){
+
+        return ResultInfo.successResultInfo(dataSourceService.verificationAccount(req));
     }
 
 }

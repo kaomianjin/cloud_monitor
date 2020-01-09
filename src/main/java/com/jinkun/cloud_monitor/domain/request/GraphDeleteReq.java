@@ -15,7 +15,7 @@ import java.util.List;
  * @version : V1.0
  */
 @Data
-@ApiModel(value = "图表的批量删除" )
+@ApiModel(value = "图表的批量删除req" )
 public class GraphDeleteReq {
 
 

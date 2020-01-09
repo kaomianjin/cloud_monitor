@@ -15,4 +15,7 @@ spring:
       max-lifetime: 6000
       connection-timeout: 3000
 
+prometheus:
+  address: http://192.168.3.252/api/v1/
+
 

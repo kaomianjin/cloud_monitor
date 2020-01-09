@@ -17,7 +17,6 @@ import java.util.Date;
 @ApiModel(value = "云监控数据源" )
 public class CloudDatasource {
     private Long id;
-
     @ApiModelProperty(value = "云类型id", dataType = "long", example = "公有云:1;私有云:2")
     private Long cloudTypeId;
     @ApiModelProperty(value = "云服务商id", dataType = "long",  example = "阿里云1;华为云2")

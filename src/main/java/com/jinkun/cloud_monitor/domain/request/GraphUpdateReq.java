@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@ApiModel(value = "图表配置更新" )
+@ApiModel(value = "图表配置更新req" )
 public class GraphUpdateReq extends GraphDetail {
 }

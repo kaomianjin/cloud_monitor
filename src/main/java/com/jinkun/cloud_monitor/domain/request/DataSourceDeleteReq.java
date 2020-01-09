@@ -15,7 +15,7 @@ import java.util.List;
  * @version : V1.0
  */
 @Data
-@ApiModel(value = "批量删除数据源")
+@ApiModel(value = "批量删除数据源req")
 public class DataSourceDeleteReq {
 
     @NotNull(message = "数据源id不能为空")

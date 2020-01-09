@@ -9,6 +9,11 @@
   <sql id="Base_Column_List" >
     id, name, cloud_type_id
   </sql>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cloud_service
+  </select>
   <select id="selectByTypeId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

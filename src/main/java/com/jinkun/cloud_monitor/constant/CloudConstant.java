@@ -12,4 +12,8 @@ public class CloudConstant {
     public static final String CLOUD_SERVICE_HUAWEI="华为云";
 
     public static final String CLOUD_SERVICE_ALI="阿里云";
+
+    public static final Integer VERIFICATION_CMDB=1;
+
+    public static final Integer VERIFICATION_PROMETHEUS=2;
 }

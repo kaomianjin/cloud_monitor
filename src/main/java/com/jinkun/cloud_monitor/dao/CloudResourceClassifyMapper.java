@@ -14,4 +14,5 @@ public interface CloudResourceClassifyMapper {
     int updateByPrimaryKeySelective(CloudResourceClassify record);
 
     int updateByPrimaryKey(CloudResourceClassify record);
+
 }

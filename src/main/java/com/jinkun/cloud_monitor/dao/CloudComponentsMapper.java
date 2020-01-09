@@ -19,4 +19,6 @@ public interface CloudComponentsMapper {
     int updateByPrimaryKey(CloudComponents record);
 
     List<CloudComponents> selectComponentsBycloudServiceId(@Param("cloudServiceId") Long cloudServiceId);
+
+    List<CloudComponents> selectSubsetAll();
 }

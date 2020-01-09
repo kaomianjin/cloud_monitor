@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
  * @version : V1.0
  */
 @Data
-@ApiModel(value = "数据源配置更新" )
+@ApiModel(value = "数据源配置更新req" )
 public class DataSourceUpdateReq extends CloudDataSourceDetail {
 
     @NotNull(message = "数据源id不能为空")

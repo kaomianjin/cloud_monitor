@@ -28,7 +28,7 @@ public class CloudDataSourceVo {
     @ApiModelProperty(value = "云类型", required = true, dataType = "CloudType", name = "cloudType", example = "见结构")
     private CloudType cloudType;
 
-    @ApiModelProperty(value = "分类名称", required = true, dataType = "Boolean", name = "status", example = "1启用:0禁用")
+    @ApiModelProperty(value = "状态", required = true, dataType = "Boolean", name = "status", example = "1启用:0禁用")
     private Boolean status;
 
     @ApiModelProperty(value = "账户状态", required = true, dataType = "Boolean", name = "accountStatus", example = "1正常:0异常")

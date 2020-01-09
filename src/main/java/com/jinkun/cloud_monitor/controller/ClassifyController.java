@@ -88,4 +88,6 @@ public class ClassifyController {
 
         return ResultInfo.result(classifyService.deleteBatch(req));
     }
+
+
 }

@@ -9,6 +9,11 @@
   <sql id="Base_Column_List" >
     id, name, cloud_service_id
   </sql>
+  <select id="selectSubsetAll"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cloud_components WHERE parent_id IS NOT NULL
+  </select>
   <select id="selectComponentsBycloudServiceId" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

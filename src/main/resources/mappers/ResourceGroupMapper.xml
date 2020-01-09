@@ -10,6 +10,18 @@
     <result column="operator" property="operator" jdbcType="VARCHAR" />
     <result column="deleted" property="deleted" jdbcType="BIT" />
   </resultMap>
+
+  <delete id="deleteBatchByIds">
+    DELETE FROM resource_group WHERE id in (
+
+    <foreach collection="ids" item="item" separator=",">
+      #{item}
+    </foreach>
+    )
+  </delete>
+  <select id="selectResourceGroupVo" resultType="com.jinkun.cloud_monitor.domain.vo.ResourceGroupVo">
+
+  </select>
   <sql id="Base_Column_List" >
     id, name, description, create_time, update_time, operator, deleted
   </sql>
@@ -23,7 +35,17 @@
     delete from resource_group
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.jinkun.cloud_monitor.domain.bean.ResourceGroup" >
+  <insert id="insertRelevance">
+      insert into relevance_group_resource (group_id, resource_id
+      )
+    values
+    <foreach collection="relevanceGroupResources" separator="," item="item">
+      (
+      #{item.groupId,jdbcType=BIGINT}, #{item.resourceId,jdbcType=BIGINT}
+      )
+    </foreach>
+  </insert>
+  <insert id="insert" parameterType="com.jinkun.cloud_monitor.domain.bean.ResourceGroup"  useGeneratedKeys="true" keyProperty="id">
     insert into resource_group (id, name, description, 
       create_time, update_time, operator, 
       deleted)

@@ -22,4 +22,8 @@ public interface CloudDatasourceMapper {
     List<CloudDatasource> queryByParams(@Param("req") DataSourceQueryReq req);
 
     int deleteBatchByIds(@Param("ids")List<Long> ids);
+
+    List<CloudDatasource> selectAll();
+
+    int countByService(@Param("id") Long id);
 }

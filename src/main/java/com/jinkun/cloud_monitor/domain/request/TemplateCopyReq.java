@@ -16,7 +16,7 @@ import java.util.List;
  * @version : V1.0
  */
 @Data
-@ApiModel(value = "模板克隆" )
+@ApiModel(value = "模板克隆req" )
 public class TemplateCopyReq{
 
 

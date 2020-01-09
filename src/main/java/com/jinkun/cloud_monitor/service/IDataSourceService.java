@@ -1,9 +1,13 @@
 package com.jinkun.cloud_monitor.service;
 
 import com.github.pagehelper.PageInfo;
+import com.jinkun.cloud_monitor.domain.bean.Area;
+import com.jinkun.cloud_monitor.domain.vo.AreaVo;
 import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceDetailVo;
 import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceVo;
+
+import java.util.List;
 
 public interface IDataSourceService {
 
@@ -17,4 +21,7 @@ public interface IDataSourceService {
 
     CloudDataSourceDetailVo selectOne(DataSourceGetReq req);
 
+    Boolean verificationAccount(DataSourceVerificationReq req);
+
+    List<Area> queryAreaVo(DataSourceAreaQueryReq req);
 }

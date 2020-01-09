@@ -15,7 +15,7 @@ import lombok.Data;
  * @version : V1.0
  */
 @Data
-@ApiModel(value = "模板下图表创建" )
+@ApiModel(value = "模板下图表创建req" )
 public class GraphAddReq extends GraphDetail {
 
 }

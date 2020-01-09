@@ -15,7 +15,7 @@ import java.util.List;
  * @version : V1.0
  */
 @Data
-@ApiModel(value = "模板批量删除" )
+@ApiModel(value = "模板批量删除req" )
 public class TemplateDeleteReq {
 
     @NotNull(message = "模板id不能为空")

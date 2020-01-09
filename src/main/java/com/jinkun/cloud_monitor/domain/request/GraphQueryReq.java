@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
  * @version : V1.0
  */
 @Data
-@ApiModel(value = "获取模板下图表列表" )
+@ApiModel(value = "获取模板下图表列表req" )
 public class GraphQueryReq extends BaseQuery {
 
     @NotNull(message = "模板id不能为空")

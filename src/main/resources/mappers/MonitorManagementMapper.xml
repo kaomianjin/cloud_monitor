@@ -13,6 +13,76 @@
   <sql id="Base_Column_List" >
     id, cloud_service_id, cloud_components_id, cloud_datasource_id, monitor, auto, template_id
   </sql>
+  <update id="updateBatch">
+    <foreach collection="list" separator=";" item="item">
+      update monitor_management
+      set
+      monitor = #{item.monitor,jdbcType=BIT},
+      auto = #{item.auto,jdbcType=BIT},
+      template_id = #{item.templateId,jdbcType=BIGINT}
+      where id = #{item.id,jdbcType=BIGINT}
+    </foreach>
+  </update>
+  <delete id="deleteByDataSourceIds">
+    delete from monitor_management where cloud_datasource_id
+    in (
+    <foreach collection="cloudDataSourceIds" separator="," item="item">
+      #{item}
+    </foreach>
+    )
+
+  </delete>
+  <insert id="insertBatch">
+    insert into monitor_management (cloud_service_id, cloud_components_id,
+      cloud_datasource_id, monitor, auto,
+      template_id)
+    values
+    <foreach collection="list" item="item" separator=",">
+     (#{#{item.cloudServiceId,jdbcType=BIGINT}, #{item.cloudComponentsId,jdbcType=BIGINT},
+      #{item.cloudDatasourceId,jdbcType=BIGINT}, #{item.monitor,jdbcType=BIT}, #{item.auto,jdbcType=BIT},
+      #{item.templateId,jdbcType=BIGINT})
+    </foreach>
+  </insert>
+
+  <select id="selectAllAutoTemplate" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from monitor_management
+    where auto=true and template_id is not null
+  </select>
+
+  <select id="selectAllAuto" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from monitor_management
+    where auto=true
+  </select>
+  <select id="queryByParamete" resultType="com.jinkun.cloud_monitor.domain.vo.CloudTypeManagementVo">
+    SELECT
+      a.id,a.cloud_components_id cloudComponentsId
+      GROUP_CONCAT( b.`name` ) serviceName,
+      GROUP_CONCAT( c.`name` ) cloudComponentsName,
+      GROUP_CONCAT( d.`name` ) cloudDatasourceName,
+      a.monitor,
+      a.auto,
+      GROUP_CONCAT( e.`name` ) templateName,
+      count(f.id) resourceNumber
+  FROM
+      `monitor_management` a
+      LEFT JOIN cloud_service b ON a.cloud_service_id= b.id
+      LEFT JOIN cloud_components c ON a.cloud_components_id = c.id
+      LEFT JOIN cloud_datasource d ON a.cloud_datasource_id = d.id
+      LEFT JOIN template e ON a.template_id = e.id
+      LEFT JOIN cloud_resource f on a.cloud_datasource_id=f.id
+      WHERE 1=1
+      <if test="req.cloudServiceId !=null ">
+        and a.cloud_service_id=req.cloudServiceId
+      </if>
+      <if test="req.cloudDataSourceId != null ">
+        and a.cloud_datasource_id=req.cloudDataSourceId
+      </if>
+      GROUP BY a.id
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

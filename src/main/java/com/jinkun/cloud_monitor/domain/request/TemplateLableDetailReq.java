@@ -12,7 +12,7 @@ import lombok.Data;
  * @version : V1.0
  */
 @Data
-@ApiModel(value = "单个模板标签更新" )
+@ApiModel(value = "单个模板标签更新req" )
 public class TemplateLableDetailReq extends TemplateLable {
 
 }

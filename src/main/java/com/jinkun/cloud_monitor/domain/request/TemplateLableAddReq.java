@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
  * @version : V1.0
  */
 @Data
-@ApiModel(value = "模板标签增加" )
+@ApiModel(value = "模板标签增加req" )
 public class TemplateLableAddReq {
 
     @NotNull(message = "模板标签名称不能为空")

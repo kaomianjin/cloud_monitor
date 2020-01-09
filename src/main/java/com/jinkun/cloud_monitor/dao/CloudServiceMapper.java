@@ -19,4 +19,6 @@ public interface CloudServiceMapper {
     int updateByPrimaryKey(CloudService record);
 
     List<CloudService> selectByTypeId(@Param("cloudTypeId") Long cloudTypeId);
+
+    List<CloudService> selectAll();
 }

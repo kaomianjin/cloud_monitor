@@ -12,6 +12,6 @@ import lombok.Data;
  * @version : V1.0
  */
 @Data
-@ApiModel(value = "资源列表查询")
+@ApiModel(value = "资源列表查询req")
 public class ClassifyQueryReq extends BaseQuery {
 }
