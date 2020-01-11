@@ -9,6 +9,32 @@
   <sql id="Base_Column_List" >
     id, name, cloud_service_id
   </sql>
+  <select id="countByServiceId" resultType="com.jinkun.cloud_monitor.domain.po.CloudComponentCount">
+    SELECT
+        a.ids ids,
+        a.`name`,
+        count( b.id ) number
+    FROM
+        (
+    SELECT
+        GROUP_CONCAT( b.id ) ids,
+        a.`name` ,
+        a.id,
+        a.cloud_service_id
+    FROM
+        cloud_components a
+        LEFT JOIN cloud_components b ON a.id = b.parent_id
+    WHERE
+        a.parent_id IS NULL
+    GROUP BY
+        a.id
+        ) a
+        LEFT JOIN cloud_resource b ON  b.component_id in (a.ids)
+    WHERE
+        a.cloud_service_id = #{id}
+    GROUP BY
+        a.id
+  </select>
   <select id="selectSubsetAll"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

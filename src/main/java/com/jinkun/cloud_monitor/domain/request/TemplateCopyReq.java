@@ -19,8 +19,7 @@ import java.util.List;
 @ApiModel(value = "模板克隆req" )
 public class TemplateCopyReq{
 
-
-    @NotNull(message = "模板id不能为空")
+    @NotNull(message = "被克隆的模板的id不能为空")
     @ApiModelProperty(value = "模板id", required = true, dataType = "Long", name = "id", example = "1")
     private Long id;
 
@@ -31,6 +30,6 @@ public class TemplateCopyReq{
     @ApiModelProperty(value = "描述", required = true, dataType = "String", name = "description", example = "这是模板描述")
     private String description;
 
-    @ApiModelProperty(value = "模板标签列表", dataType = "List<TemplateLable>", name = "templateLableList", example = "见数据结构")
-    private List<TemplateLable> templateLableList;
+    @ApiModelProperty(value = "模板标签列表", dataType = "String", name = "templateLableList", example = "这是一个标签")
+    private List<String> templateLableList;
 }

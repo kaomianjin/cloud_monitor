@@ -5,6 +5,7 @@ import com.jinkun.cloud_monitor.domain.bean.CloudMonitorItems;
 import com.jinkun.cloud_monitor.domain.bean.Trigger;
 import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.MonitotrItemVo;
+import com.jinkun.cloud_monitor.domain.vo.PageView;
 import com.jinkun.cloud_monitor.domain.vo.ResultInfo;
 import com.jinkun.cloud_monitor.domain.vo.TriggerDetailVo;
 import com.jinkun.cloud_monitor.service.IMonitorProjectService;
@@ -32,7 +33,7 @@ public class MonitorProjectsController {
 
 
     @PostMapping("/get/batch")
-    public ResultInfo<PageInfo<MonitotrItemVo>> seletList(@Validated @RequestBody MonitorItemsQueryReq req){
+    public ResultInfo<PageView<MonitotrItemVo>> seletList(@Validated @RequestBody MonitorItemsQueryReq req){
 
         return ResultInfo.successResultInfo(monitorProjectService.selectListVo(req));
     }
@@ -50,7 +51,7 @@ public class MonitorProjectsController {
     }
 
     @PostMapping("/get/trigger/batch")
-    public ResultInfo<PageInfo<Trigger>> selectListTriger(@Validated @RequestBody TriggerQueryReq req){
+    public ResultInfo<PageView<Trigger>> selectListTriger(@Validated @RequestBody TriggerQueryReq req){
 
         return ResultInfo.successResultInfo(triggerService.selectList(req));
     }

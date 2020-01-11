@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.jinkun.cloud_monitor.dao.DemoMapper;
 import com.jinkun.cloud_monitor.domain.bean.Demo;
 import com.jinkun.cloud_monitor.domain.request.DemoQuery;
+import com.jinkun.cloud_monitor.domain.vo.PageView;
 import com.jinkun.cloud_monitor.service.IDemoService;
 import org.springframework.stereotype.Service;
 
@@ -30,10 +31,10 @@ public class DemoServiceImpl implements IDemoService {
     }
 
     @Override
-    public PageInfo<Demo> selectList(DemoQuery query) {
+    public PageView<Demo> selectList(DemoQuery query) {
         PageHelper.startPage(query.getPageNum(),query.getPageSize());
         List<Demo> entities=demoMapper.queryByParams(query);
-        return new PageInfo<>(entities);
+        return new PageView<>(new PageInfo(entities));
     }
 
     @Override

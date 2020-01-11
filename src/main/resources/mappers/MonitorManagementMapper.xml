@@ -38,7 +38,7 @@
       template_id)
     values
     <foreach collection="list" item="item" separator=",">
-     (#{#{item.cloudServiceId,jdbcType=BIGINT}, #{item.cloudComponentsId,jdbcType=BIGINT},
+     (#{item.cloudServiceId,jdbcType=BIGINT}, #{item.cloudComponentsId,jdbcType=BIGINT},
       #{item.cloudDatasourceId,jdbcType=BIGINT}, #{item.monitor,jdbcType=BIT}, #{item.auto,jdbcType=BIT},
       #{item.templateId,jdbcType=BIGINT})
     </foreach>

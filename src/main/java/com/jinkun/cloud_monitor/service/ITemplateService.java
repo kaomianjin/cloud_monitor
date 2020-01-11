@@ -3,11 +3,12 @@ package com.jinkun.cloud_monitor.service;
 import com.github.pagehelper.PageInfo;
 import com.jinkun.cloud_monitor.domain.po.*;
 import com.jinkun.cloud_monitor.domain.request.*;
+import com.jinkun.cloud_monitor.domain.vo.PageView;
 import com.jinkun.cloud_monitor.domain.vo.TemplateVo;
 
 public interface ITemplateService {
 
-    PageInfo<TemplateVo> selectList(TemplateQueryReq req);
+    PageView<TemplateVo> selectList(TemplateQueryReq req);
 
     TemplateDetail get(TemplateGetReq req);
 

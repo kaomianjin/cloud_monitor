@@ -19,4 +19,5 @@ public class BaseQuery {
     private int pageNum=1;
     @ApiModelProperty(value = "资源分类id", dataType = "Long", name = "id", example = "10")
     private int pageSize=10;
+
 }

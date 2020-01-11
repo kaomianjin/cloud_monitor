@@ -9,6 +9,7 @@ import com.jinkun.cloud_monitor.domain.bean.Template;
 import com.jinkun.cloud_monitor.domain.bean.TemplateLable;
 import com.jinkun.cloud_monitor.domain.po.*;
 import com.jinkun.cloud_monitor.domain.request.*;
+import com.jinkun.cloud_monitor.domain.vo.PageView;
 import com.jinkun.cloud_monitor.domain.vo.TemplateVo;
 import com.jinkun.cloud_monitor.service.ITemplateService;
 import com.jinkun.cloud_monitor.utils.AssertUtil;
@@ -38,7 +39,7 @@ public class TemplateServiceImpl implements ITemplateService {
     private CloudMonitorItemsMapper cloudMonitorItemsMapper;
 
     @Override
-    public PageInfo<TemplateVo> selectList(TemplateQueryReq req) {
+    public PageView<TemplateVo> selectList(TemplateQueryReq req) {
 
         PageHelper.startPage(req.getPageNum(),req.getPageSize());
         List<Long>ids=templateMapper.selectIdsByParameter(req);
@@ -48,7 +49,7 @@ public class TemplateServiceImpl implements ITemplateService {
             templateVos=templateMapper.selectListVoByParameter(ids);
         }
         info.setList(templateVos);
-        return info;
+        return new PageView<>(info);
     }
 
     @Override
@@ -106,12 +107,17 @@ public class TemplateServiceImpl implements ITemplateService {
 
         boolean lableAdd=true;
 
+        List<TemplateLable>templateLables=new ArrayList<>();
         req.getTemplateLableList().forEach(templateLable -> {
-            templateLable.setTemplateId(template.getId());
+
+            TemplateLable lable=new TemplateLable();
+            lable.setName(templateLable);
+            lable.setTemplateId(template.getId());
+            templateLables.add(lable);
         });
 
-        if (req.getTemplateLableList().size()!=0) {
-            lableAdd=templateLableMapper.insertBatch(req.getTemplateLableList()) == req.getTemplateLableList().size();
+        if (templateLables.size()!=0) {
+            lableAdd=templateLableMapper.insertBatch(templateLables) == req.getTemplateLableList().size();
         }
         return templateAdd&&lableAdd&&monitorItemAdd;
     }
@@ -127,7 +133,8 @@ public class TemplateServiceImpl implements ITemplateService {
         if (req.getIds().size()==0){
             return true;
         }
-        return templateMapper.deleteBatchByIds(req.getIds())==req.getIds().size();
+        templateMapper.deleteBatchByIds(req.getIds());
+        return true;
     }
 
     @Override

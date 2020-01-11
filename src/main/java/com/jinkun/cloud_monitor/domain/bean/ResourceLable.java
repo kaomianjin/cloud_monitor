@@ -1,5 +1,11 @@
 package com.jinkun.cloud_monitor.domain.bean;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
+
+@Data
+@NoArgsConstructor
 public class ResourceLable {
     private Long id;
 
@@ -7,27 +13,7 @@ public class ResourceLable {
 
     private Long cloudHostId;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
-    }
-
-    public Long getCloudHostId() {
-        return cloudHostId;
-    }
-
-    public void setCloudHostId(Long cloudHostId) {
-        this.cloudHostId = cloudHostId;
+    public ResourceLable(ResourceLable lable){
+        BeanUtils.copyProperties(lable,this);
     }
 }

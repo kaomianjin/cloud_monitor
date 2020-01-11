@@ -3,6 +3,7 @@ package com.jinkun.cloud_monitor.service;
 import com.github.pagehelper.PageInfo;
 import com.jinkun.cloud_monitor.domain.bean.Demo;
 import com.jinkun.cloud_monitor.domain.request.DemoQuery;
+import com.jinkun.cloud_monitor.domain.vo.PageView;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface IDemoService {
 
     Demo get();
 
-    PageInfo<Demo> selectList(DemoQuery query);
+    PageView<Demo> selectList(DemoQuery query);
 
     boolean save();
 }

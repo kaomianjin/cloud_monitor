@@ -2,11 +2,8 @@ package com.jinkun.cloud_monitor.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.jinkun.cloud_monitor.domain.bean.Area;
-import com.jinkun.cloud_monitor.domain.vo.AreaVo;
-import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceDetailVo;
+import com.jinkun.cloud_monitor.domain.vo.*;
 import com.jinkun.cloud_monitor.domain.request.*;
-import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceVo;
-import com.jinkun.cloud_monitor.domain.vo.ResultInfo;
 import com.jinkun.cloud_monitor.service.IDataSourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -57,7 +54,7 @@ public class DataSourceController {
     */
     @PostMapping("/get/batch")
     @ApiOperation(value = "获取云监控数据源列表", notes = "批量查询")
-    public ResultInfo<PageInfo<CloudDataSourceVo>> selectList(@Validated @RequestBody DataSourceQueryReq req){
+    public ResultInfo<PageView<CloudDataSourceVo>> selectList(@Validated @RequestBody DataSourceQueryReq req){
 
         return ResultInfo.successResultInfo(dataSourceService.selectList(req));
     }

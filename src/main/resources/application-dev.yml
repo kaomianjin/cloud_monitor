@@ -17,5 +17,8 @@ spring:
 
 prometheus:
   address: http://192.168.3.252/api/v1/
+  addressVerification: http://192.168.3.58:8001/asset/check_key/
+  addressLogin: http://192.168.3.58:8001/login
+
 
 

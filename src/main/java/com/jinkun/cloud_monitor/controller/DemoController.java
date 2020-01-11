@@ -3,6 +3,7 @@ package com.jinkun.cloud_monitor.controller;
 import com.github.pagehelper.PageInfo;
 import com.jinkun.cloud_monitor.domain.bean.Demo;
 import com.jinkun.cloud_monitor.domain.request.DemoQuery;
+import com.jinkun.cloud_monitor.domain.vo.PageView;
 import com.jinkun.cloud_monitor.domain.vo.ResultInfo;
 import com.jinkun.cloud_monitor.service.IDemoService;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,7 @@ public class DemoController {
     }
 
     @RequestMapping("/all")
-    public ResultInfo<PageInfo<Demo>> selectList(@RequestBody DemoQuery query){
+    public ResultInfo<PageView<Demo>> selectList(@RequestBody DemoQuery query){
         return ResultInfo.successResultInfo(demoService.selectList(query));
     }
 

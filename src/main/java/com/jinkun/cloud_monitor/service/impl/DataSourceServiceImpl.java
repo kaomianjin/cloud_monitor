@@ -5,16 +5,16 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jinkun.cloud_monitor.client.PrometheusClient;
 import com.jinkun.cloud_monitor.constant.CloudConstant;
-import com.jinkun.cloud_monitor.constant.PrometheusConstant;
+import com.jinkun.cloud_monitor.constant.Prometheus.PrometheusConstant;
 import com.jinkun.cloud_monitor.constant.ResponseEnum;
 import com.jinkun.cloud_monitor.dao.*;
 import com.jinkun.cloud_monitor.domain.bean.*;
 import com.jinkun.cloud_monitor.domain.po.AliyunVerify;
-import com.jinkun.cloud_monitor.domain.vo.AreaVo;
 import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceDetailVo;
 import com.jinkun.cloud_monitor.domain.po.HuaweiVerify;
 import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceVo;
+import com.jinkun.cloud_monitor.domain.vo.PageView;
 import com.jinkun.cloud_monitor.service.ICloudTypeManagementService;
 import com.jinkun.cloud_monitor.service.IDataSourceService;
 import com.jinkun.cloud_monitor.utils.AssertUtil;
@@ -22,9 +22,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /***
@@ -69,7 +67,7 @@ public class DataSourceServiceImpl implements IDataSourceService {
 
         AssertUtil.isTrue(count>0,"目前只支持一个"+req.getCloudService().getName()+"账号");
 
-        AssertUtil.isTrue(cloudDatasourceMapper.insert(cloudDatasource)!=0,"添加失败");
+        AssertUtil.isTrue(cloudDatasourceMapper.insert(cloudDatasource)!=1,"添加失败");
 
         cloudTypeManagementService.addTypeManagement(cloudDatasource.getId());
         return true;
@@ -91,7 +89,7 @@ public class DataSourceServiceImpl implements IDataSourceService {
 
         int count=cloudDatasourceMapper.updateByPrimaryKey(cloudDatasource);
 
-        AssertUtil.isTrue(count!=0,"更新失败");
+        AssertUtil.isTrue(count!=1,"更新失败");
 
         return true;
     }
@@ -108,19 +106,19 @@ public class DataSourceServiceImpl implements IDataSourceService {
 
         if (req.getIds()!=null&&req.getIds().size()!=0) {
             cloudTypeManagementService.deleteByDataSourceIds(req.getIds());
-            return cloudDatasourceMapper.deleteBatchByIds(req.getIds())==req.getIds().size();
+            cloudDatasourceMapper.deleteBatchByIds(req.getIds());
         }
         return true;
     }
 
     @Override
-    public PageInfo<CloudDataSourceVo> selectList(DataSourceQueryReq req) {
+    public PageView<CloudDataSourceVo> selectList(DataSourceQueryReq req) {
         PageHelper.startPage(req.getPageNum(),req.getPageSize());
         List<CloudDatasource> entities=cloudDatasourceMapper.queryByParams(req);
         PageInfo info=new PageInfo(entities);
         List<CloudDataSourceVo> cloudDataSourceVos=cloudDataSourceVosList(entities);
         info.setList(cloudDataSourceVos);
-        return info;
+        return new PageView(info);
     }
 
     @Override
@@ -132,56 +130,133 @@ public class DataSourceServiceImpl implements IDataSourceService {
     @Override
     public Boolean verificationAccount(DataSourceVerificationReq req) {
 
-        VerificationAccount verificationAccount=verificationAccountMapper.selectByKey(req.getKey());
+        if(req.getType().equals(CloudConstant.ALI_CLOUD_CODE)){
+            AliyunVerify aliyunVerify=req.getAliyunVerify();
+            VerificationAccount verificationAccount=verificationAccountMapper.selectByKey(aliyunVerify.getKey());
 
-        if (verificationAccount!=null){
-            String times=verificationAccount.getTimes();
-            List<Long> timeList=JSON.parseObject(times,ArrayList.class);
-            if (timeList.size()>=5) {
-                if ((System.currentTimeMillis() - timeList.get(0)) < PrometheusConstant.TWOHOUR) {
-                    throw new RuntimeException("2小时内不能验证超过5次");
-                }
-            }
-        }
-
-        Boolean verification;
-        if (CloudConstant.VERIFICATION_PROMETHEUS.equals(req.getType())){
-            verification=prometheusClient.verificationAccount(req);
-        }else if (CloudConstant.VERIFICATION_CMDB.equals(req.getType())){
-            verification=prometheusClient.verificationAccount(req);
-        }else {
-            throw new RuntimeException("参数错误");
-        }
-
-        if (verificationAccount==null){
-            List<Long>times=new ArrayList<>();
-            times.add(System.currentTimeMillis());
-            verificationAccount =new  VerificationAccount();
-            verificationAccount.setAccountId(req.getKey());
-            verificationAccount.setTimes(JSON.toJSONString(times));
-            verificationAccount.setLastTime(System.currentTimeMillis());
-            verificationAccountMapper.insert(verificationAccount);
-        }else{
-            String times=verificationAccount.getTimes();
-            List<Long> timeList=JSON.parseObject(times,ArrayList.class);
-            if (timeList.size()>=5){
-                List<Long> newTimes=new ArrayList<>();
-                for (int i=0;i<timeList.size();i++){
-                    if (i==0){
-                        continue;
+            if (verificationAccount!=null){
+                String times=verificationAccount.getTimes();
+                List<Long> timeList=JSON.parseObject(times,ArrayList.class);
+                if (timeList.size()>=5) {
+                    if ((System.currentTimeMillis() - timeList.get(0)) < PrometheusConstant.TWOHOUR) {
+                        throw new RuntimeException("2小时内不能验证超过5次");
                     }
-                    newTimes.add(timeList.get(i));
                 }
-                verificationAccount.setTimes(JSON.toJSONString(newTimes));
-            }else{
-                timeList.add(System.currentTimeMillis());
-                verificationAccount.setTimes(JSON.toJSONString(timeList));
             }
-            verificationAccountMapper.updateByPrimaryKeySelective(verificationAccount);
+
+            Boolean verification=prometheusClient.verificationAccount(req);
+
+            if (verificationAccount==null){
+                List<Long>times=new ArrayList<>();
+                times.add(System.currentTimeMillis());
+                verificationAccount =new  VerificationAccount();
+                verificationAccount.setAccountId(aliyunVerify.getKey());
+                verificationAccount.setTimes(JSON.toJSONString(times));
+                verificationAccount.setLastTime(System.currentTimeMillis());
+                verificationAccountMapper.insert(verificationAccount);
+            }else{
+                String times=verificationAccount.getTimes();
+                List<Long> timeList=JSON.parseObject(times,ArrayList.class);
+                if (timeList.size()>=5){
+                    List<Long> newTimes=new ArrayList<>();
+                    for (int i=0;i<timeList.size();i++){
+                        if (i==0){
+                            continue;
+                        }
+                        newTimes.add(timeList.get(i));
+                    }
+                    verificationAccount.setTimes(JSON.toJSONString(newTimes));
+                }else{
+                    timeList.add(System.currentTimeMillis());
+                    verificationAccount.setTimes(JSON.toJSONString(timeList));
+                }
+                verificationAccountMapper.updateByPrimaryKeySelective(verificationAccount);
+            }
+
+        }else {
+            HuaweiVerify huaweiVerify=new HuaweiVerify();
+            VerificationAccount verificationKey=verificationAccountMapper.selectByKey(huaweiVerify.getKey());
+
+            VerificationAccount verificationAccount=verificationAccountMapper.selectByKey(huaweiVerify.getAccount());
+
+
+            if (verificationAccount!=null){
+                String times=verificationAccount.getTimes();
+                List<Long> timeList=JSON.parseObject(times,ArrayList.class);
+                if (timeList.size()>=5) {
+                    if ((System.currentTimeMillis() - timeList.get(0)) < PrometheusConstant.TWOHOUR) {
+                        throw new RuntimeException("2小时内不能验证超过5次");
+                    }
+                }
+            }
+            if (verificationKey!=null){
+                String times=verificationKey.getTimes();
+                List<Long> timeList=JSON.parseObject(times,ArrayList.class);
+                if (timeList.size()>=5) {
+                    if ((System.currentTimeMillis() - timeList.get(0)) < PrometheusConstant.TWOHOUR) {
+                        throw new RuntimeException("2小时内不能验证超过5次");
+                    }
+                }
+            }
+
+            Boolean verificationCmdb=prometheusClient.verificationAccount(req);
+            Boolean verificationPrometheus=prometheusClient.verificationAccount(req);
+
+            if (verificationAccount==null){
+                List<Long>times=new ArrayList<>();
+                times.add(System.currentTimeMillis());
+                verificationAccount =new  VerificationAccount();
+                verificationAccount.setAccountId(verificationAccount.getAccountId());
+                verificationAccount.setTimes(JSON.toJSONString(times));
+                verificationAccount.setLastTime(System.currentTimeMillis());
+                verificationAccountMapper.insert(verificationAccount);
+            }else{
+                String times=verificationAccount.getTimes();
+                List<Long> timeList=JSON.parseObject(times,ArrayList.class);
+                if (timeList.size()>=5){
+                    List<Long> newTimes=new ArrayList<>();
+                    for (int i=0;i<timeList.size();i++){
+                        if (i==0){
+                            continue;
+                        }
+                        newTimes.add(timeList.get(i));
+                    }
+                    verificationAccount.setTimes(JSON.toJSONString(newTimes));
+                }else{
+                    timeList.add(System.currentTimeMillis());
+                    verificationAccount.setTimes(JSON.toJSONString(timeList));
+                }
+                verificationAccountMapper.updateByPrimaryKeySelective(verificationAccount);
+            }
+
+            if (verificationKey==null){
+                List<Long>times=new ArrayList<>();
+                times.add(System.currentTimeMillis());
+                verificationAccount =new  VerificationAccount();
+                verificationAccount.setAccountId(verificationKey.getAccountId());
+                verificationAccount.setTimes(JSON.toJSONString(times));
+                verificationAccount.setLastTime(System.currentTimeMillis());
+                verificationAccountMapper.insert(verificationAccount);
+            }else{
+                String times=verificationAccount.getTimes();
+                List<Long> timeList=JSON.parseObject(times,ArrayList.class);
+                if (timeList.size()>=5){
+                    List<Long> newTimes=new ArrayList<>();
+                    for (int i=0;i<timeList.size();i++){
+                        if (i==0){
+                            continue;
+                        }
+                        newTimes.add(timeList.get(i));
+                    }
+                    verificationAccount.setTimes(JSON.toJSONString(newTimes));
+                }else{
+                    timeList.add(System.currentTimeMillis());
+                    verificationAccount.setTimes(JSON.toJSONString(timeList));
+                }
+                verificationAccountMapper.updateByPrimaryKeySelective(verificationAccount);
+            }
         }
-
-        return verification;
-
+        return null;
     }
 
     @Override

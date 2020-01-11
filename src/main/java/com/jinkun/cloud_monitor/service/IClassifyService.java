@@ -7,12 +7,13 @@ import com.jinkun.cloud_monitor.domain.bean.CloudType;
 import com.jinkun.cloud_monitor.domain.po.ClassifyDetail;
 import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.ClassifyVo;
+import com.jinkun.cloud_monitor.domain.vo.PageView;
 
 import java.util.List;
 
 public interface IClassifyService {
 
-    PageInfo<ClassifyVo> selectList(ClassifyQueryReq req);
+    PageView<ClassifyVo> selectList(ClassifyQueryReq req);
 
     ClassifyDetail getDetail(ClassifyGetReq req);
 

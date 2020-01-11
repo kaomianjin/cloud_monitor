@@ -21,7 +21,6 @@
     </properties>
 
     <dependencies>
-
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
         <dependency>
             <groupId>org.springframework</groupId>

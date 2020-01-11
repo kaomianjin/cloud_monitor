@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.jinkun.cloud_monitor.domain.po.*;
 import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.GraphVo;
+import com.jinkun.cloud_monitor.domain.vo.PageView;
 import com.jinkun.cloud_monitor.domain.vo.ResultInfo;
 import com.jinkun.cloud_monitor.domain.vo.TemplateVo;
 import com.jinkun.cloud_monitor.service.IGraphService;
@@ -34,7 +35,7 @@ public class TemplateController {
 
     @PostMapping("/get/batch")
     @ApiOperation(value = "模板列表获取", notes = "批量获取")
-    public ResultInfo<PageInfo<TemplateVo>> selectList(@Validated @RequestBody TemplateQueryReq req){
+    public ResultInfo<PageView<TemplateVo>> selectList(@Validated @RequestBody TemplateQueryReq req){
 
         return ResultInfo.successResultInfo(templateService.selectList(req));
     }
@@ -97,7 +98,7 @@ public class TemplateController {
 
     @PostMapping("/get/graph/batch")
     @ApiOperation(value = "模板图表列表获取", notes = "模板获取图表列表")
-    public ResultInfo<PageInfo<GraphVo>> selectList(@Validated @RequestBody GraphQueryReq req){
+    public ResultInfo<PageView<GraphVo>> selectList(@Validated @RequestBody GraphQueryReq req){
 
         return ResultInfo.successResultInfo(graphService.selectList(req));
     }

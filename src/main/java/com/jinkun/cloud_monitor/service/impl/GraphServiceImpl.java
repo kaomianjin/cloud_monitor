@@ -7,6 +7,7 @@ import com.jinkun.cloud_monitor.domain.bean.Graph;
 import com.jinkun.cloud_monitor.domain.po.GraphDetail;
 import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.GraphVo;
+import com.jinkun.cloud_monitor.domain.vo.PageView;
 import com.jinkun.cloud_monitor.service.IGraphService;
 import com.jinkun.cloud_monitor.utils.AssertUtil;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class GraphServiceImpl implements IGraphService {
     private GraphMapper graphMapper;
 
     @Override
-    public PageInfo<GraphVo> selectList(GraphQueryReq req) {
+    public PageView<GraphVo> selectList(GraphQueryReq req) {
 
         PageHelper.startPage(req.getPageNum(),req.getPageSize());
         List<Long> ids=graphMapper.selectIdsByParameter(req);
@@ -39,7 +40,7 @@ public class GraphServiceImpl implements IGraphService {
         }else{
             graphVos=graphMapper.selectListVoByParameter(ids);
         }
-        return new PageInfo<>(graphVos);
+        return new PageView(new PageInfo(graphVos));
     }
 
     @Override
@@ -65,7 +66,8 @@ public class GraphServiceImpl implements IGraphService {
         Graph graph=new Graph(req);
         boolean repeat =graphMapper.verifyRepeat(graph)>0;
         AssertUtil.isTrue(repeat,"该模板下图标名重复");
-        return graphMapper.updateByPrimaryKeySelective(graph)==1;
+        graphMapper.updateByPrimaryKeySelective(graph);
+        return true;
     }
 
     @Override
@@ -73,7 +75,9 @@ public class GraphServiceImpl implements IGraphService {
 
         AssertUtil.isTrue(req.getIds().size()==0,"没有任何删除选项");
 
-        return graphMapper.deleteBatchByIds(req.getIds())==req.getIds().size();
+        graphMapper.deleteBatchByIds(req.getIds());
+
+        return true;
     }
 
 }

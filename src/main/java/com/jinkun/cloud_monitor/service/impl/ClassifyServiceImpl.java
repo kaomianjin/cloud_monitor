@@ -7,6 +7,7 @@ import com.jinkun.cloud_monitor.domain.bean.*;
 import com.jinkun.cloud_monitor.domain.po.ClassifyDetail;
 import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.ClassifyVo;
+import com.jinkun.cloud_monitor.domain.vo.PageView;
 import com.jinkun.cloud_monitor.service.IClassifyService;
 import com.jinkun.cloud_monitor.utils.AssertUtil;
 import org.springframework.stereotype.Service;
@@ -38,17 +39,19 @@ public class ClassifyServiceImpl implements IClassifyService {
     private CloudTypeMapper cloudTypeMapper;
 
     @Override
-    public PageInfo<ClassifyVo> selectList(ClassifyQueryReq req) {
+    public PageView<ClassifyVo> selectList(ClassifyQueryReq req) {
 
         PageHelper.startPage(req.getPageNum(),req.getPageSize());
         List<Long>ids=cloudClassifyMapper.selectIds(req);
-        PageInfo info=new PageInfo<>(ids);
+        PageInfo pageInfo=new PageInfo<>(ids);
         List<ClassifyVo>classifyVos=new ArrayList<>();
         if(ids.size()!=0){
             classifyVos=cloudClassifyMapper.selectListVoByParameter(ids);
         }
-        info.setList(classifyVos);
-        return info;
+        pageInfo.setList(classifyVos);
+
+
+        return new PageView<ClassifyVo>(pageInfo);
     }
 
     @Override
@@ -119,7 +122,8 @@ public class ClassifyServiceImpl implements IClassifyService {
         List<Long>classifyIds=cloudClassifyMapper.selectClassifyResourceByClassifyIds(req.getIds());
         AssertUtil.isTrue(classifyIds.size()==req.getIds().size(),"所有删除项都存在关联的资源");
         req.getIds().removeAll(classifyIds);
-        return cloudClassifyMapper.deleteBatchByIds(req.getIds())==req.getIds().size();
+        cloudClassifyMapper.deleteBatchByIds(req.getIds());
+        return true;
     }
 
     @Override

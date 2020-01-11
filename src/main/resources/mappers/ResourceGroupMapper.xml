@@ -11,6 +11,13 @@
     <result column="deleted" property="deleted" jdbcType="BIT" />
   </resultMap>
 
+  <select id="countAddRepetitionByReq" resultType="integer">
+    select count(*) from resource_group where `name`=#{req.name}
+  </select>
+  <select id="countUpdateRepetitionByReq" resultType="integer">
+    select count(*) from resource_group where `name`=#{req.name} and id !=#{req.id}
+  </select>
+
   <delete id="deleteBatchByIds">
     DELETE FROM resource_group WHERE id in (
 

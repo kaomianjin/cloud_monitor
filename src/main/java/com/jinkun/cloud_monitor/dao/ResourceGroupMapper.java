@@ -3,6 +3,8 @@ package com.jinkun.cloud_monitor.dao;
 import com.jinkun.cloud_monitor.domain.bean.RelevanceGroupResource;
 import com.jinkun.cloud_monitor.domain.bean.ResourceGroup;
 import com.jinkun.cloud_monitor.domain.request.ResourceGroupQueryReq;
+import com.jinkun.cloud_monitor.domain.request.ResourceGroupSaveReq;
+import com.jinkun.cloud_monitor.domain.request.ResourceGroupUpdateReq;
 import com.jinkun.cloud_monitor.domain.vo.ResourceGroupVo;
 import com.jinkun.cloud_monitor.domain.vo.TemplateVo;
 import org.apache.ibatis.annotations.Param;
@@ -27,4 +29,8 @@ public interface ResourceGroupMapper {
     int insertRelevance(@Param("relevanceGroupResources") List<RelevanceGroupResource> relevanceGroupResources);
 
     int deleteBatchByIds(@Param("ids") List<Long> ids);
+
+    int countAddRepetitionByReq(@Param("req") ResourceGroupSaveReq req);
+
+    int countUpdateRepetitionByReq(ResourceGroupUpdateReq req);
 }

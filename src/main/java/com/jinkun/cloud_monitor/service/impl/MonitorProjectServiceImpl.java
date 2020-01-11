@@ -8,6 +8,7 @@ import com.jinkun.cloud_monitor.domain.request.MonitorItemsDetailReq;
 import com.jinkun.cloud_monitor.domain.request.MonitorItemsGetReq;
 import com.jinkun.cloud_monitor.domain.request.MonitorItemsQueryReq;
 import com.jinkun.cloud_monitor.domain.vo.MonitotrItemVo;
+import com.jinkun.cloud_monitor.domain.vo.PageView;
 import com.jinkun.cloud_monitor.service.IMonitorProjectService;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +29,11 @@ public class MonitorProjectServiceImpl implements IMonitorProjectService {
     private CloudMonitorItemsMapper cloudMonitorItemsMapper;
 
     @Override
-    public PageInfo<MonitotrItemVo> selectListVo(MonitorItemsQueryReq req) {
+    public PageView<MonitotrItemVo> selectListVo(MonitorItemsQueryReq req) {
 
         PageHelper.startPage(req.getPageNum(),req.getPageSize());
         List<MonitotrItemVo> entities=cloudMonitorItemsMapper.selectListVo(req);
-        return new PageInfo(entities);
+        return new PageView(new PageInfo(entities));
     }
 
     @Override

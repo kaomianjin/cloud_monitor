@@ -9,6 +9,12 @@ package com.jinkun.cloud_monitor.constant;
  */
 public class CloudConstant {
 
+    public static final Integer ALI_CLOUD_CODE=1;
+
+    public static final Integer HUAWEI_CLOUD_CODE=2;
+
+    public static final String PUBLIC_CLOUD="公有云";
+
     public static final String CLOUD_SERVICE_HUAWEI="华为云";
 
     public static final String CLOUD_SERVICE_ALI="阿里云";

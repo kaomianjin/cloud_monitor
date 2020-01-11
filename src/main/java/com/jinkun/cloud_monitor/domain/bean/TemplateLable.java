@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "模板标签对象" )
 public class TemplateLable {
 
-    @ApiModelProperty(value = "模板标签列表", dataType = "Long", name = "id", example = "1/新增不传")
+    @ApiModelProperty(value = "模板标签列表", dataType = "Long", name = "id", example = "1/新增、copy不传")
     private Long id;
 
     @NotNull(message = "名称不能为空")

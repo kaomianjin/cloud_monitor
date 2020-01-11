@@ -9,6 +9,19 @@
   <sql id="Base_Column_List" >
     id, name, cloud_type_id
   </sql>
+  <select id="countByTypeId" resultType="com.jinkun.cloud_monitor.domain.po.CloudServiceCount">
+    SELECT
+        a.id,
+        a.`name`,
+        count( b.id	) number
+    FROM
+        cloud_service a
+        LEFT JOIN cloud_resource b ON a.id = b.service_id
+    WHERE
+        a.cloud_type_id = #{id}
+    GROUP BY
+        a.id
+  </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

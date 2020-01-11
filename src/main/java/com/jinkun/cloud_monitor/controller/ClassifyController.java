@@ -7,6 +7,7 @@ import com.jinkun.cloud_monitor.domain.bean.CloudType;
 import com.jinkun.cloud_monitor.domain.po.ClassifyDetail;
 import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.ClassifyVo;
+import com.jinkun.cloud_monitor.domain.vo.PageView;
 import com.jinkun.cloud_monitor.domain.vo.ResultInfo;
 import com.jinkun.cloud_monitor.service.IClassifyService;
 import io.swagger.annotations.Api;
@@ -56,7 +57,7 @@ public class ClassifyController {
 
     @PostMapping("/get/batch")
     @ApiOperation(value = "云分类列表查询", notes = "列表的批量获取")
-    public ResultInfo<PageInfo<ClassifyVo>> selectList(@Validated @RequestBody ClassifyQueryReq req){
+    public ResultInfo<PageView<ClassifyVo>> selectList(@Validated @RequestBody ClassifyQueryReq req){
 
         return ResultInfo.successResultInfo(classifyService.selectList(req));
     }

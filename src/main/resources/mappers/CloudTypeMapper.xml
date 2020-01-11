@@ -9,6 +9,10 @@
   <sql id="Base_Column_List" >
     id, name,`status`
   </sql>
+  <select id="countById" resultType="integer">
+    select count(*) from cloud_resource
+    where cloud_type_id=#{id}
+  </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

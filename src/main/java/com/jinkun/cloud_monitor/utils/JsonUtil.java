@@ -1,8 +1,7 @@
-package com.ju.utils;
+package com.jinkun.cloud_monitor.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-
 import java.util.Map;
 
 /***

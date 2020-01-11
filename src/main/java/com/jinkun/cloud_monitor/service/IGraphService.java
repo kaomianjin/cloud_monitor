@@ -4,10 +4,11 @@ import com.github.pagehelper.PageInfo;
 import com.jinkun.cloud_monitor.domain.po.GraphDetail;
 import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.GraphVo;
+import com.jinkun.cloud_monitor.domain.vo.PageView;
 
 public interface IGraphService {
 
-    PageInfo<GraphVo> selectList(GraphQueryReq req);
+    PageView<GraphVo> selectList(GraphQueryReq req);
 
     GraphDetail getDetail(GraphGetReq req);
 

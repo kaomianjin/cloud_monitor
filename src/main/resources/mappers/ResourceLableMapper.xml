@@ -7,8 +7,29 @@
     <result column="cloud_host_id" property="cloudHostId" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, cloud_host_id
+    id, `name`, cloud_host_id
   </sql>
+  <select id="countSaveRepetitionByReq">
+    select count(*) from resource_lable where `name`=#{req.name} and cloud_host_id=#{req.cloudHostId}
+  </select>
+
+  <select id="countUpdateRepetitionByReq">
+    select count(*) from resource_lable where `name`=#{req.name} and id != #{req.id} and cloud_host_id=#{req.cloudHostId}
+  </select>
+  <delete id="deleteBatch">
+    delete  from resource_lable
+    where id in (
+        <foreach collection="ids" separator="," item="item">
+          #{item}
+        </foreach>
+    )
+  </delete>
+  <select id="selectLables" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from resource_lable
+    where cloud_host_id = #{id,jdbcType=BIGINT}
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

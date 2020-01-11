@@ -6,6 +6,7 @@ import com.jinkun.cloud_monitor.domain.vo.AreaVo;
 import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceDetailVo;
 import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.CloudDataSourceVo;
+import com.jinkun.cloud_monitor.domain.vo.PageView;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface IDataSourceService {
 
     boolean delete(DataSourceDeleteReq req);
 
-    PageInfo<CloudDataSourceVo> selectList(DataSourceQueryReq req);
+    PageView<CloudDataSourceVo> selectList(DataSourceQueryReq req);
 
     CloudDataSourceDetailVo selectOne(DataSourceGetReq req);
 

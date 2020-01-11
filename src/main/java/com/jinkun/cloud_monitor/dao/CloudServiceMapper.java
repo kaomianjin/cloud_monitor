@@ -1,6 +1,7 @@
 package com.jinkun.cloud_monitor.dao;
 
 import com.jinkun.cloud_monitor.domain.bean.CloudService;
+import com.jinkun.cloud_monitor.domain.po.CloudServiceCount;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface CloudServiceMapper {
     List<CloudService> selectByTypeId(@Param("cloudTypeId") Long cloudTypeId);
 
     List<CloudService> selectAll();
+
+    List<CloudServiceCount> countByTypeId(@Param("id") Long id);
 }
