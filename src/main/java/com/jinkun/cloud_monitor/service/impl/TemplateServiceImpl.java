@@ -10,6 +10,7 @@ import com.jinkun.cloud_monitor.domain.bean.TemplateLable;
 import com.jinkun.cloud_monitor.domain.po.*;
 import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.PageView;
+import com.jinkun.cloud_monitor.domain.vo.TemplateClassifyVo;
 import com.jinkun.cloud_monitor.domain.vo.TemplateVo;
 import com.jinkun.cloud_monitor.service.ITemplateService;
 import com.jinkun.cloud_monitor.utils.AssertUtil;
@@ -32,6 +33,8 @@ import java.util.List;
 public class TemplateServiceImpl implements ITemplateService {
 
     @Resource
+    private CloudClassifyMapper cloudClassifyMapper;
+    @Resource
     private TemplateMapper templateMapper;
     @Resource
     private TemplateLableMapper templateLableMapper;
@@ -40,6 +43,11 @@ public class TemplateServiceImpl implements ITemplateService {
 
     @Override
     public PageView<TemplateVo> selectList(TemplateQueryReq req) {
+
+        if (req.isAll()){
+            int count=templateMapper.countIdsByParameter(req);
+            req.setPageSize(count);
+        }
 
         PageHelper.startPage(req.getPageNum(),req.getPageSize());
         List<Long>ids=templateMapper.selectIdsByParameter(req);
@@ -63,6 +71,9 @@ public class TemplateServiceImpl implements ITemplateService {
 
     @Override
     public Boolean update(TemplateUpdateReq req) {
+
+        Template old=templateMapper.selectByPrimaryKey(req.getId());
+        AssertUtil.isTrue(old.getType().equals(TemplateEnum.BUILT_IN_TEMPLATE.getType()),"内置模板不可修改");
         boolean repetition=templateMapper.selectRepetitionByReq(req)>0;
         AssertUtil.isTrue(repetition,"模板名重复");
         Template template=new Template();
@@ -127,6 +138,12 @@ public class TemplateServiceImpl implements ITemplateService {
         if (req.getIds().size()==0){
             return true;
         }
+
+        List<Template>templates=templateMapper.selectByIds(req.getIds());
+        templates.forEach(template -> {
+            AssertUtil.isTrue(template.getType().equals(TemplateEnum.BUILT_IN_TEMPLATE.getType()),"内置模板不可删除");
+        });
+
         List<Long>templateIds=templateMapper.selectTemplateIdsClassifyTemplate(req.getIds());
         AssertUtil.isTrue(templateIds.size()==req.getIds().size(),"所有删除项都存在关联的分类");
         req.getIds().removeAll(templateIds);
@@ -142,6 +159,15 @@ public class TemplateServiceImpl implements ITemplateService {
         boolean repetition=templateLableMapper.countAddRepetitionByReq(req)>0;
         AssertUtil.isTrue(repetition,"该模板下此标签已存在");
         return templateLableMapper.insert(new TemplateLable(req))==1;
+    }
+
+    @Override
+    public List<TemplateClassifyVo> selectBatchClassify(TemplateClassifyQuery req) {
+        List<TemplateClassifyVo>templateClassifyVos=cloudClassifyMapper.selectVoByTemplateId(req.getTemplateId());
+        templateClassifyVos.forEach(templateClassifyVo -> {
+            templateClassifyVo.setTemplateId(req.getTemplateId());
+        });
+        return templateClassifyVos;
     }
 
     private Template copy(TemplateCopyReq req) {

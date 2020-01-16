@@ -27,7 +27,7 @@ public interface MonitorManagementMapper {
 
     void deleteByDataSourceIds(@Param("cloudDataSourceIds") List<Long> cloudDataSourceIds);
 
-    ResultInfo<Boolean> updateBatch(@Param("list") List<CloudTypeManagementVo> managementVos);
+    int updateBatch(@Param("list") List<CloudTypeManagementVo> managementVos);
 
     List<MonitorManagement> selectAllAuto();
 

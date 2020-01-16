@@ -2,12 +2,15 @@ package com.jinkun.cloud_monitor.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.jinkun.cloud_monitor.dao.CloudClassifyMapper;
+import com.jinkun.cloud_monitor.dao.CloudClassifyTemplateMapper;
 import com.jinkun.cloud_monitor.dao.GraphMapper;
 import com.jinkun.cloud_monitor.domain.bean.Graph;
 import com.jinkun.cloud_monitor.domain.po.GraphDetail;
 import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.GraphVo;
 import com.jinkun.cloud_monitor.domain.vo.PageView;
+import com.jinkun.cloud_monitor.domain.vo.TemplateClassifyVo;
 import com.jinkun.cloud_monitor.service.IGraphService;
 import com.jinkun.cloud_monitor.utils.AssertUtil;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,8 @@ public class GraphServiceImpl implements IGraphService {
 
     @Resource
     private GraphMapper graphMapper;
+    @Resource
+    private CloudClassifyMapper cloudClassifyMapper;
 
     @Override
     public PageView<GraphVo> selectList(GraphQueryReq req) {

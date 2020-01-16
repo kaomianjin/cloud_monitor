@@ -26,4 +26,7 @@ public class TemplateQueryReq extends BaseQuery {
     @ApiModelProperty(value = "云组件id", dataType = "Long", name = "cloudComponentsId", example = "1")
     private Long cloudComponentsId;
 
+    @ApiModelProperty(value = "是否查询全部", dataType = "Boolean", name = "all", example = "true")
+    private boolean all;
+
 }

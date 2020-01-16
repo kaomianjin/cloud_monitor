@@ -10,7 +10,6 @@
     <result column="operator" property="operator" jdbcType="VARCHAR" />
     <result column="deleted" property="deleted" jdbcType="BIT" />
   </resultMap>
-
   <select id="countAddRepetitionByReq" resultType="integer">
     select count(*) from resource_group where `name`=#{req.name}
   </select>
@@ -26,8 +25,35 @@
     </foreach>
     )
   </delete>
+  <select id="countTemplateNumberByGroupId" resultType="integer">
+    SELECT
+        count(a.template_id) templateNumber
+    FROM
+    (
+    SELECT
+        template_id
+    FROM
+        cloud_classify_template
+    WHERE
+        classify_id IN ( SELECT classify_id FROM cloud_resource_classify WHERE resource_id IN ( SELECT resource_id FROM relevance_group_resource WHERE group_id = 1 ) )
+    UNION
+    SELECT
+        template_id
+    FROM
+        cloud_resource_template
+    WHERE
+        resource_id IN ( SELECT resource_id FROM relevance_group_resource WHERE group_id = #{id} )
+    ) a
+  </select>
   <select id="selectResourceGroupVo" resultType="com.jinkun.cloud_monitor.domain.vo.ResourceGroupVo">
-
+    select
+    a.id,count(b.id) resourceNumber,a.`name`,a.create_time date
+    from resource_group a
+		LEFT JOIN
+		relevance_group_resource b
+		on a.id=b.group_id
+		GROUP BY a.id
+    order by a.id DESC
   </select>
   <sql id="Base_Column_List" >
     id, name, description, create_time, update_time, operator, deleted

@@ -13,7 +13,7 @@ public interface TriggerMapper {
 
     int insertSelective(Trigger record);
 
-    Trigger selectByPrimaryKey(Long id);
+    Trigger selectByPrimaryKey(@Param("id") Long id);
 
     int updateByPrimaryKeySelective(Trigger record);
 
@@ -22,4 +22,6 @@ public interface TriggerMapper {
     List<Trigger> selectList(@Param("req") TriggerQueryReq req);
 
     int deleteBatch(@Param("ids") List<Long> ids);
+
+    List<Trigger> selectListByTemplateId(@Param("id") Long id);
 }

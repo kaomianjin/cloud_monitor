@@ -9,6 +9,13 @@
   <sql id="Base_Column_List" >
     id, resource_id, classify_id
   </sql>
+  <delete id="deleteByResourceIds">
+    delete from cloud_resource_classify where resource_id in(
+    <foreach collection="ids" separator="," item="item">
+      #{item}
+    </foreach>
+    )
+  </delete>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />

@@ -41,6 +41,7 @@
   </select>
   <select id="selectIdsByParameter" resultType="long">
     SELECT id FROM graph WHERE template_id=#{req.templateId}
+    order by id DESC
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 

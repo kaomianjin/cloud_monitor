@@ -2,6 +2,7 @@ package com.jinkun.cloud_monitor.service;
 
 import com.github.pagehelper.PageInfo;
 import com.jinkun.cloud_monitor.domain.bean.CloudMonitorItems;
+import com.jinkun.cloud_monitor.domain.bean.Trigger;
 import com.jinkun.cloud_monitor.domain.request.MonitorItemsDetailReq;
 import com.jinkun.cloud_monitor.domain.request.MonitorItemsGetReq;
 import com.jinkun.cloud_monitor.domain.request.MonitorItemsQueryReq;
@@ -15,4 +16,6 @@ public interface IMonitorProjectService {
     CloudMonitorItems get(MonitorItemsGetReq req);
 
     Boolean update(MonitorItemsDetailReq req);
+
+    PageView<Trigger> seletTriggerListByTemplateId(MonitorItemsQueryReq req);
 }

@@ -44,6 +44,13 @@
     WHERE
         id IN ( SELECT template_id FROM cloud_classify_template WHERE classify_id = #{id} )
   </select>
+    <select id="selectVoByTemplateId" resultType="com.jinkun.cloud_monitor.domain.vo.TemplateClassifyVo">
+        SELECT a.`name`,count(b.id) `count`  FROM cloud_classify  a
+        LEFT JOIN
+        cloud_resource_classify b on a.id=b.classify_id
+        WHERE a.id in (SELECT classify_id FROM cloud_classify_template WHERE template_id=#{templateId})
+        GROUP BY a.id
+    </select>
   <select id="selectListVoByParameter" resultType="com.jinkun.cloud_monitor.domain.vo.ClassifyVo">
       SELECT s.id,GROUP_CONCAT(s.classifyName)  `name`,sum(s.`status`) `status`,GROUP_CONCAT(s.cloudServiceName) cloudServiceName,GROUP_CONCAT(s.componentsName) componentName,GROUP_CONCAT(s.templateName) templateName,sum(s.resourceNumber) resourceNumber
 
@@ -100,6 +107,7 @@
     select
         id
     from cloud_classify
+    order by id DESC
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 

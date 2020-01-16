@@ -3,7 +3,9 @@ package com.jinkun.cloud_monitor.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jinkun.cloud_monitor.dao.CloudMonitorItemsMapper;
+import com.jinkun.cloud_monitor.dao.TriggerMapper;
 import com.jinkun.cloud_monitor.domain.bean.CloudMonitorItems;
+import com.jinkun.cloud_monitor.domain.bean.Trigger;
 import com.jinkun.cloud_monitor.domain.request.MonitorItemsDetailReq;
 import com.jinkun.cloud_monitor.domain.request.MonitorItemsGetReq;
 import com.jinkun.cloud_monitor.domain.request.MonitorItemsQueryReq;
@@ -28,6 +30,9 @@ public class MonitorProjectServiceImpl implements IMonitorProjectService {
     @Resource
     private CloudMonitorItemsMapper cloudMonitorItemsMapper;
 
+    @Resource
+    private TriggerMapper triggerMapper;
+
     @Override
     public PageView<MonitotrItemVo> selectListVo(MonitorItemsQueryReq req) {
 
@@ -45,6 +50,14 @@ public class MonitorProjectServiceImpl implements IMonitorProjectService {
     @Override
     public Boolean update(MonitorItemsDetailReq req) {
 
-        return cloudMonitorItemsMapper.updateByPrimaryKeySelective(req)==1;
+        return cloudMonitorItemsMapper.updateByReq(req)==1;
+    }
+
+    @Override
+    public PageView<Trigger> seletTriggerListByTemplateId(MonitorItemsQueryReq req) {
+
+        PageHelper.startPage(req.getPageNum(),req.getPageSize());
+        List<Trigger> entities=triggerMapper.selectListByTemplateId(req.getId());
+        return new PageView(new PageInfo(entities));
     }
 }

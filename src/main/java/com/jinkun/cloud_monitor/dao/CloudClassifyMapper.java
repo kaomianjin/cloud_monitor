@@ -5,6 +5,7 @@ import com.jinkun.cloud_monitor.domain.bean.Template;
 import com.jinkun.cloud_monitor.domain.request.ClassifyDetailReq;
 import com.jinkun.cloud_monitor.domain.request.ClassifyQueryReq;
 import com.jinkun.cloud_monitor.domain.vo.ClassifyVo;
+import com.jinkun.cloud_monitor.domain.vo.TemplateClassifyVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -35,4 +36,6 @@ public interface CloudClassifyMapper {
     List<Long> selectClassifyResourceByClassifyIds(@Param("ids")List<Long> ids);
 
     int deleteBatchByIds(@Param("ids")List<Long> ids);
+
+    List<TemplateClassifyVo> selectVoByTemplateId(@Param("templateId") Long templateId);
 }

@@ -1,5 +1,6 @@
 package com.jinkun.cloud_monitor.dao;
 
+import com.jinkun.cloud_monitor.domain.bean.CloudResource;
 import com.jinkun.cloud_monitor.domain.bean.RelevanceGroupResource;
 import com.jinkun.cloud_monitor.domain.bean.ResourceGroup;
 import com.jinkun.cloud_monitor.domain.request.ResourceGroupQueryReq;
@@ -24,6 +25,8 @@ public interface ResourceGroupMapper {
 
     int updateByPrimaryKey(ResourceGroup record);
 
+    int countTemplateNumberByGroupId(@Param("id") Long id);
+
     List<ResourceGroupVo> selectResourceGroupVo(@Param("req") ResourceGroupQueryReq req);
 
     int insertRelevance(@Param("relevanceGroupResources") List<RelevanceGroupResource> relevanceGroupResources);
@@ -32,5 +35,6 @@ public interface ResourceGroupMapper {
 
     int countAddRepetitionByReq(@Param("req") ResourceGroupSaveReq req);
 
-    int countUpdateRepetitionByReq(ResourceGroupUpdateReq req);
+    int countUpdateRepetitionByReq(@Param("req") ResourceGroupUpdateReq req);
+
 }

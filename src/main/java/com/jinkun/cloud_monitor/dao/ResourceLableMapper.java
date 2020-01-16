@@ -27,4 +27,6 @@ public interface ResourceLableMapper {
     int countSaveRepetitionByReq(@Param("req") ResourceLableSaveReq req);
 
     int countUpdateRepetitionByReq(@Param("req")ResourceLableUpdateReq req);
+
+    List<String> selectAllLableNames();
 }

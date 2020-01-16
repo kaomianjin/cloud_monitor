@@ -1,12 +1,8 @@
 package com.jinkun.cloud_monitor.controller;
 
-import com.github.pagehelper.PageInfo;
 import com.jinkun.cloud_monitor.domain.po.*;
 import com.jinkun.cloud_monitor.domain.request.*;
-import com.jinkun.cloud_monitor.domain.vo.GraphVo;
-import com.jinkun.cloud_monitor.domain.vo.PageView;
-import com.jinkun.cloud_monitor.domain.vo.ResultInfo;
-import com.jinkun.cloud_monitor.domain.vo.TemplateVo;
+import com.jinkun.cloud_monitor.domain.vo.*;
 import com.jinkun.cloud_monitor.service.IGraphService;
 import com.jinkun.cloud_monitor.service.ITemplateService;
 import io.swagger.annotations.Api;
@@ -15,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /***
  * @ClassName: TemplateController
@@ -122,6 +119,13 @@ public class TemplateController {
     public  ResultInfo<Boolean> deleteBatchGraph(@Validated @RequestBody GraphDeleteReq req){
 
         return ResultInfo.result(graphService.deleteBatchGraph(req));
+    }
+
+    @PostMapping("/get/classify/batch")
+    @ApiOperation(value = "获取木板下的分类", notes = "获取木板下的分类")
+    public  ResultInfo<List<TemplateClassifyVo>> selectBatchClassify(@Validated @RequestBody TemplateClassifyQuery req){
+
+        return ResultInfo.successResultInfo(templateService.selectBatchClassify(req));
     }
 }
 

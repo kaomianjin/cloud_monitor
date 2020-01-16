@@ -9,11 +9,17 @@
   <sql id="Base_Column_List" >
     id, `name`, cloud_host_id
   </sql>
-  <select id="countSaveRepetitionByReq">
+
+  <select id="selectAllLableNames" resultType="string">
+    SELECT DISTINCT `name` FROM `resource_lable`
+    order by id DESC
+  </select>
+
+  <select id="countSaveRepetitionByReq" resultType="integer">
     select count(*) from resource_lable where `name`=#{req.name} and cloud_host_id=#{req.cloudHostId}
   </select>
 
-  <select id="countUpdateRepetitionByReq">
+  <select id="countUpdateRepetitionByReq" resultType="integer">
     select count(*) from resource_lable where `name`=#{req.name} and id != #{req.id} and cloud_host_id=#{req.cloudHostId}
   </select>
   <delete id="deleteBatch">
@@ -29,6 +35,7 @@
     <include refid="Base_Column_List" />
     from resource_lable
     where cloud_host_id = #{id,jdbcType=BIGINT}
+    order by id DESC
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -46,7 +53,7 @@
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{cloudHostId,jdbcType=BIGINT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.jinkun.cloud_monitor.domain.bean.ResourceLable" >
+  <insert id="insertSelective" parameterType="com.jinkun.cloud_monitor.domain.bean.ResourceLable">
     insert into resource_lable
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

@@ -199,7 +199,6 @@ public class DataSourceServiceImpl implements IDataSourceService {
                 }
             }
 
-            Boolean verificationCmdb=prometheusClient.verificationAccount(req);
             Boolean verificationPrometheus=prometheusClient.verificationAccount(req);
 
             if (verificationAccount==null){

@@ -27,6 +27,7 @@ public class DataSourceController {
     @Resource
     private IDataSourceService dataSourceService;
 
+    @ApiOperation(value = "区域列表", notes = "区域列表")
     @PostMapping("/get/area/batch")
     public ResultInfo<List<Area>> queryAreaVo(@Validated @RequestBody DataSourceAreaQueryReq req){
 

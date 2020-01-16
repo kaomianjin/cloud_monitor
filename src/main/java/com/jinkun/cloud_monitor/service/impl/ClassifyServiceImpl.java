@@ -69,7 +69,9 @@ public class ClassifyServiceImpl implements IClassifyService {
                 .name(classify.getName())
                 .cloudService(cloudService)
                 .cloudComponents(cloudComponents)
-                .template(template);
+                .template(template)
+                .status(classify.isStatus())
+                .description(classify.getDescription());
 
         return builder.build();
     }

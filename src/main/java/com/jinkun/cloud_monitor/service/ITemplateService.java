@@ -4,7 +4,10 @@ import com.github.pagehelper.PageInfo;
 import com.jinkun.cloud_monitor.domain.po.*;
 import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.PageView;
+import com.jinkun.cloud_monitor.domain.vo.TemplateClassifyVo;
 import com.jinkun.cloud_monitor.domain.vo.TemplateVo;
+
+import java.util.List;
 
 public interface ITemplateService {
 
@@ -23,4 +26,6 @@ public interface ITemplateService {
     boolean deleteTemplates(TemplateDeleteReq req);
 
     boolean addTemplateLable(TemplateLableAddReq req);
+
+    List<TemplateClassifyVo> selectBatchClassify(TemplateClassifyQuery req);
 }

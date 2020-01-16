@@ -48,7 +48,7 @@
     select
     <include refid="Base_Column_List" />
     from monitor_management
-    where auto=true and template_id is not null
+    where auto=true and template_id is not null AND LENGTH(trim(template_id))>0
   </select>
 
   <select id="selectAllAuto" resultMap="BaseResultMap">
@@ -59,12 +59,12 @@
   </select>
   <select id="queryByParamete" resultType="com.jinkun.cloud_monitor.domain.vo.CloudTypeManagementVo">
     SELECT
-      a.id,a.cloud_components_id cloudComponentsId
+      a.id,a.cloud_components_id cloudComponentsId,a.cloud_service_id cloudServiceId,
       GROUP_CONCAT( b.`name` ) serviceName,
       GROUP_CONCAT( c.`name` ) cloudComponentsName,
       GROUP_CONCAT( d.`name` ) cloudDatasourceName,
       a.monitor,
-      a.auto,
+      a.auto,a.template_id templateId,
       GROUP_CONCAT( e.`name` ) templateName,
       count(f.id) resourceNumber
   FROM
@@ -76,10 +76,10 @@
       LEFT JOIN cloud_resource f on a.cloud_datasource_id=f.id
       WHERE 1=1
       <if test="req.cloudServiceId !=null ">
-        and a.cloud_service_id=req.cloudServiceId
+        and a.cloud_service_id=#{req.cloudServiceId}
       </if>
       <if test="req.cloudDataSourceId != null ">
-        and a.cloud_datasource_id=req.cloudDataSourceId
+        and a.cloud_datasource_id=#{req.cloudDataSourceId}
       </if>
       GROUP BY a.id
   </select>

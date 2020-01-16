@@ -22,6 +22,7 @@ public class ClassifyVo {
 
     @ApiModelProperty(value = "分类状态", required = true, dataType = "Integer", name = "status", example = "1/启用;0禁用")
     private Integer status;
+
     @ApiModelProperty(value = "云商名称", required = true, dataType = "String", name = "cloudServiceName", example = "华为云/阿里云")
     private String cloudServiceName;
 

@@ -1,6 +1,9 @@
 package com.jinkun.cloud_monitor.dao;
 
 import com.jinkun.cloud_monitor.domain.bean.CloudResourceClassify;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface CloudResourceClassifyMapper {
     int deleteByPrimaryKey(Long id);
@@ -15,4 +18,5 @@ public interface CloudResourceClassifyMapper {
 
     int updateByPrimaryKey(CloudResourceClassify record);
 
+    int deleteByResourceIds(@Param("ids") List<Long> ids);
 }

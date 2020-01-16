@@ -6,6 +6,9 @@ import com.jinkun.cloud_monitor.exception.ParameterException;
 import com.jinkun.cloud_monitor.exception.ServeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -38,10 +41,29 @@ public class InterceptingExceptionHandler {
         log.error("全局异常拦截器 请求参数格式不正确  {} 请求地址 {}  /  异常信息  {}", e, req.getRequestURL(), e.getMessage());
         return ResultInfo.failedResultInfo(ResponseEnum.PARAMETER_ERROR.getCode(), ResponseEnum.PARAMETER_ERROR.getMsg());
     }
+
     @ExceptionHandler(value = SQLException.class)
     public ResultInfo sqlErrorHandler(HttpServletRequest req, SQLException e) {
         log.error("全局异常拦截器 sql语句异常  {} 请求地址 {}  /  异常信息  {}", e, req.getRequestURL(), e.getMessage());
         return ResultInfo.failedResultInfo("系统繁忙,请稍后重试");
+    }
+
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResultInfo runErrorHandler(HttpServletRequest req, MethodArgumentNotValidException e) {
+        log.error("全局异常拦截器 运行异常  {} 请求地址 {}  /  异常信息  {}", e, req.getRequestURL(), e.getMessage());
+        return ResultInfo.failedResultInfo(ResponseEnum.PARAMETER_ERROR.getCode(),e.getMessage());
+    }
+
+    @ExceptionHandler(value = MissingServletRequestParameterException.class)
+    public ResultInfo runErrorHandler(HttpServletRequest req, MissingServletRequestParameterException e) {
+        log.error("全局异常拦截器 运行异常  {} 请求地址 {}  /  异常信息  {}", e, req.getRequestURL(), e.getMessage());
+        return ResultInfo.failedResultInfo(ResponseEnum.PARAMETER_ERROR.getCode(),e.getMessage());
+    }
+
+    @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+    public ResultInfo runErrorHandler(HttpServletRequest req, HttpRequestMethodNotSupportedException e) {
+        log.error("全局异常拦截器 运行异常  {} 请求地址 {}  /  异常信息  {}", e, req.getRequestURL(), e.getMessage());
+        return ResultInfo.failedResultInfo(ResponseEnum.PARAMETER_ERROR.getCode(),e.getMessage());
     }
 
     @ExceptionHandler(value = RuntimeException.class)
@@ -50,8 +72,9 @@ public class InterceptingExceptionHandler {
         return ResultInfo.failedResultInfo(e.getMessage());
     }
 
+
     @ExceptionHandler(value = Exception.class)
     public ResultInfo<Boolean> exception(Exception e) {
-        return ResultInfo.failedResultInfo(e.getMessage());
+        return ResultInfo.failedResultInfo("服务器内部异常");
     }
 }

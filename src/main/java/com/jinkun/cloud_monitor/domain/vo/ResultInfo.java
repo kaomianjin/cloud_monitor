@@ -41,7 +41,6 @@ public class ResultInfo<T> implements Serializable {
         return setResultInfo(ResponseEnum.FAIL.getCode(),message,null);
     }
 
-
     public static <T>ResultInfo<T> failedResultInfo(int code,String message){
         return setResultInfo(code,message,null);
     }

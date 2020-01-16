@@ -23,7 +23,7 @@ public class CloudClassify {
 
     @NotNull(message = "需要标明启用禁用")
     @ApiModelProperty(value = "资源分类id", required = true, dataType = "Boolean", name = "status", example = "true")
-    private Boolean status;
+    private boolean status;
 
     @NotNull(message = "需要标明属于哪个云下")
     @ApiModelProperty(value = "云服务商id", required = true, dataType = "Long", name = "cloudServiceId", example = "1")
