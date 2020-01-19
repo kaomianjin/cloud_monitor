@@ -6,11 +6,13 @@ import com.jinkun.cloud_monitor.exception.ParameterException;
 import com.jinkun.cloud_monitor.exception.ServeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.ResourceAccessException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -64,6 +66,19 @@ public class InterceptingExceptionHandler {
     public ResultInfo runErrorHandler(HttpServletRequest req, HttpRequestMethodNotSupportedException e) {
         log.error("全局异常拦截器 运行异常  {} 请求地址 {}  /  异常信息  {}", e, req.getRequestURL(), e.getMessage());
         return ResultInfo.failedResultInfo(ResponseEnum.PARAMETER_ERROR.getCode(),e.getMessage());
+    }
+
+    @ExceptionHandler(value = HttpMediaTypeNotSupportedException.class)
+    public ResultInfo runErrorHandler(HttpServletRequest req, HttpMediaTypeNotSupportedException e) {
+        log.error("全局异常拦截器 运行异常  {} 请求地址 {}  /  异常信息  {}", e, req.getRequestURL(), e.getMessage());
+        return ResultInfo.failedResultInfo(ResponseEnum.PARAMETER_ERROR.getCode(),e.getMessage());
+    }
+
+
+    @ExceptionHandler(value = ResourceAccessException.class)
+    public ResultInfo runErrorHandler(HttpServletRequest req, ResourceAccessException e) {
+        log.error("全局异常拦截器 运行异常  {} 请求地址 {}  /  异常信息  {}", e, req.getRequestURL(), e.getMessage());
+        return ResultInfo.failedResultInfo(e.getMessage());
     }
 
     @ExceptionHandler(value = RuntimeException.class)

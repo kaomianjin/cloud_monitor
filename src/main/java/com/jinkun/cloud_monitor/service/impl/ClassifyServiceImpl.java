@@ -11,6 +11,8 @@ import com.jinkun.cloud_monitor.domain.vo.PageView;
 import com.jinkun.cloud_monitor.service.IClassifyService;
 import com.jinkun.cloud_monitor.utils.AssertUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -77,7 +79,7 @@ public class ClassifyServiceImpl implements IClassifyService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public boolean save(ClassifyDetailReq req) {
 
         boolean repetition=cloudClassifyMapper.countUpRepetitionByReq(req)>0;
@@ -94,7 +96,7 @@ public class ClassifyServiceImpl implements IClassifyService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public boolean update(ClassifyDetailReq req) {
 
         boolean repetition=cloudClassifyMapper.countUpRepetitionByReq(req)>0;
@@ -115,7 +117,7 @@ public class ClassifyServiceImpl implements IClassifyService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public boolean deleteBatch(ClassifyDeleteReq req) {
 
         if (req.getIds().size()==0){

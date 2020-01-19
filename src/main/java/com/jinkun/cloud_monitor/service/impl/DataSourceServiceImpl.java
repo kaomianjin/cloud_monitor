@@ -20,6 +20,9 @@ import com.jinkun.cloud_monitor.service.IDataSourceService;
 import com.jinkun.cloud_monitor.utils.AssertUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -57,6 +60,7 @@ public class DataSourceServiceImpl implements IDataSourceService {
     private PrometheusClient prometheusClient;
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 36000, rollbackFor = Exception.class)
     public boolean save(DataSourceSaveReq req) {
 
         checkDataSourceCreate(req);
@@ -67,9 +71,10 @@ public class DataSourceServiceImpl implements IDataSourceService {
 
         AssertUtil.isTrue(count>0,"目前只支持一个"+req.getCloudService().getName()+"账号");
 
-        AssertUtil.isTrue(cloudDatasourceMapper.insert(cloudDatasource)!=1,"添加失败");
+        AssertUtil.isTrue(cloudDatasourceMapper.insertSelective(cloudDatasource)!=1,"添加失败");
 
         cloudTypeManagementService.addTypeManagement(cloudDatasource.getId());
+
         return true;
     }
 
@@ -130,9 +135,11 @@ public class DataSourceServiceImpl implements IDataSourceService {
     @Override
     public Boolean verificationAccount(DataSourceVerificationReq req) {
 
+        boolean verification;
+
         if(req.getType().equals(CloudConstant.ALI_CLOUD_CODE)){
             AliyunVerify aliyunVerify=req.getAliyunVerify();
-            VerificationAccount verificationAccount=verificationAccountMapper.selectByKey(aliyunVerify.getKey());
+            VerificationAccount verificationAccount=verificationAccountMapper.selectByKey(aliyunVerify.getKey(),req.getType());
 
             if (verificationAccount!=null){
                 String times=verificationAccount.getTimes();
@@ -144,7 +151,7 @@ public class DataSourceServiceImpl implements IDataSourceService {
                 }
             }
 
-            Boolean verification=prometheusClient.verificationAccount(req);
+            verification=prometheusClient.verificationAccount(req);
 
             if (verificationAccount==null){
                 List<Long>times=new ArrayList<>();
@@ -153,18 +160,15 @@ public class DataSourceServiceImpl implements IDataSourceService {
                 verificationAccount.setAccountId(aliyunVerify.getKey());
                 verificationAccount.setTimes(JSON.toJSONString(times));
                 verificationAccount.setLastTime(System.currentTimeMillis());
+                verificationAccount.setType(req.getType());
                 verificationAccountMapper.insert(verificationAccount);
             }else{
                 String times=verificationAccount.getTimes();
                 List<Long> timeList=JSON.parseObject(times,ArrayList.class);
                 if (timeList.size()>=5){
-                    List<Long> newTimes=new ArrayList<>();
-                    for (int i=0;i<timeList.size();i++){
-                        if (i==0){
-                            continue;
-                        }
-                        newTimes.add(timeList.get(i));
-                    }
+
+                    List<Long> newTimes=timeList.subList(1,5);
+                    newTimes.add(System.currentTimeMillis());
                     verificationAccount.setTimes(JSON.toJSONString(newTimes));
                 }else{
                     timeList.add(System.currentTimeMillis());
@@ -172,13 +176,9 @@ public class DataSourceServiceImpl implements IDataSourceService {
                 }
                 verificationAccountMapper.updateByPrimaryKeySelective(verificationAccount);
             }
-
         }else {
             HuaweiVerify huaweiVerify=new HuaweiVerify();
-            VerificationAccount verificationKey=verificationAccountMapper.selectByKey(huaweiVerify.getKey());
-
-            VerificationAccount verificationAccount=verificationAccountMapper.selectByKey(huaweiVerify.getAccount());
-
+            VerificationAccount verificationAccount=verificationAccountMapper.selectByKey(huaweiVerify.getAccount(),req.getType());
 
             if (verificationAccount!=null){
                 String times=verificationAccount.getTimes();
@@ -189,17 +189,8 @@ public class DataSourceServiceImpl implements IDataSourceService {
                     }
                 }
             }
-            if (verificationKey!=null){
-                String times=verificationKey.getTimes();
-                List<Long> timeList=JSON.parseObject(times,ArrayList.class);
-                if (timeList.size()>=5) {
-                    if ((System.currentTimeMillis() - timeList.get(0)) < PrometheusConstant.TWOHOUR) {
-                        throw new RuntimeException("2小时内不能验证超过5次");
-                    }
-                }
-            }
 
-            Boolean verificationPrometheus=prometheusClient.verificationAccount(req);
+            verification=prometheusClient.verificationAccount(req);
 
             if (verificationAccount==null){
                 List<Long>times=new ArrayList<>();
@@ -208,45 +199,13 @@ public class DataSourceServiceImpl implements IDataSourceService {
                 verificationAccount.setAccountId(verificationAccount.getAccountId());
                 verificationAccount.setTimes(JSON.toJSONString(times));
                 verificationAccount.setLastTime(System.currentTimeMillis());
+                verificationAccount.setType(req.getType());
                 verificationAccountMapper.insert(verificationAccount);
             }else{
                 String times=verificationAccount.getTimes();
                 List<Long> timeList=JSON.parseObject(times,ArrayList.class);
                 if (timeList.size()>=5){
-                    List<Long> newTimes=new ArrayList<>();
-                    for (int i=0;i<timeList.size();i++){
-                        if (i==0){
-                            continue;
-                        }
-                        newTimes.add(timeList.get(i));
-                    }
-                    verificationAccount.setTimes(JSON.toJSONString(newTimes));
-                }else{
-                    timeList.add(System.currentTimeMillis());
-                    verificationAccount.setTimes(JSON.toJSONString(timeList));
-                }
-                verificationAccountMapper.updateByPrimaryKeySelective(verificationAccount);
-            }
-
-            if (verificationKey==null){
-                List<Long>times=new ArrayList<>();
-                times.add(System.currentTimeMillis());
-                verificationAccount =new  VerificationAccount();
-                verificationAccount.setAccountId(verificationKey.getAccountId());
-                verificationAccount.setTimes(JSON.toJSONString(times));
-                verificationAccount.setLastTime(System.currentTimeMillis());
-                verificationAccountMapper.insert(verificationAccount);
-            }else{
-                String times=verificationAccount.getTimes();
-                List<Long> timeList=JSON.parseObject(times,ArrayList.class);
-                if (timeList.size()>=5){
-                    List<Long> newTimes=new ArrayList<>();
-                    for (int i=0;i<timeList.size();i++){
-                        if (i==0){
-                            continue;
-                        }
-                        newTimes.add(timeList.get(i));
-                    }
+                    List<Long> newTimes=timeList.subList(1,5);
                     verificationAccount.setTimes(JSON.toJSONString(newTimes));
                 }else{
                     timeList.add(System.currentTimeMillis());
@@ -255,7 +214,8 @@ public class DataSourceServiceImpl implements IDataSourceService {
                 verificationAccountMapper.updateByPrimaryKeySelective(verificationAccount);
             }
         }
-        return null;
+        AssertUtil.isTrue(!verification,"验证失败");
+        return verification;
     }
 
     @Override

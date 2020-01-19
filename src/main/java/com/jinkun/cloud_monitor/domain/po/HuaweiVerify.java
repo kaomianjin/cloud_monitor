@@ -13,19 +13,16 @@ import lombok.Data;
 @Data
 public class HuaweiVerify {
 
-    @ApiModelProperty(value = "账户", dataType = "String", example = "见数据结构")
+    @ApiModelProperty(value = "账户", dataType = "String", example = "123")
     private String account;
 
-    @ApiModelProperty(value = "密码", dataType = "String", example = "见数据结构")
+    @ApiModelProperty(value = "用户名", dataType = "String", example = "123")
+    private String username;
+
+    @ApiModelProperty(value = "密码", dataType = "String", example = "123")
     private String password;
 
     @ApiModelProperty(value = "区域id", dataType = "String", example = "cn-south-1")
     private String areaId;
-
-    @ApiModelProperty(value = "AccessKey", dataType = "string", example = "XIUBXIHAVJKX")
-    private String key;
-
-    @ApiModelProperty(value = "Secret", dataType = "string", example = "SAFGQXKJQBQWE ")
-    private String secret;
 
 }

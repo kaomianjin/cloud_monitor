@@ -7,18 +7,18 @@ server:
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    username: root
-    password: 9527ju
+    username: {username}
+    password: {password}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://10.0.0.56:3306/cloud_monitor?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&zeroDateTimeBehavior=CONVERT_TO_NULL&autoReconnect=true&useSSL=false
+    url: jdbc:mysql://{address}/cloud_monitor?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&zeroDateTimeBehavior=CONVERT_TO_NULL&autoReconnect=true&useSSL=false
     hikari:
       max-lifetime: 6000
       connection-timeout: 3000
 
 prometheus:
-  address: http://192.168.3.252/api/v1/
-  addressVerification: http://192.168.3.58:8001/asset/check_key/
-  addressLogin: http://192.168.3.58:8001/login
+  address: {address}
+  addressVerification: {addressVerification}
+  employ: true
 
 
 
