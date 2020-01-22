@@ -63,28 +63,28 @@ public class ClassifyController {
     }
 
     @PostMapping("/get/one")
-    @ApiOperation(value = "云类型详情查询", notes = "详情")
+    @ApiOperation(value = "云分类详情查询", notes = "详情")
     public ResultInfo<ClassifyDetail> getOne(@Validated @RequestBody ClassifyGetReq req){
 
         return ResultInfo.successResultInfo(classifyService.getDetail(req));
     }
 
     @PostMapping("/save/one")
-    @ApiOperation(value = "云类型新增", notes = "详情保存")
+    @ApiOperation(value = "云分类新增", notes = "详情保存")
     public ResultInfo<Boolean> saveClassify(@Validated @RequestBody ClassifyDetailReq req){
 
         return ResultInfo.result(classifyService.save(req));
     }
 
     @PostMapping("/update/one")
-    @ApiOperation(value = "云类型更新", notes = "详情更新")
+    @ApiOperation(value = "云分类更新", notes = "详情更新")
     public ResultInfo<Boolean> updateClassify(@Validated @RequestBody ClassifyDetailReq req){
 
         return ResultInfo.result(classifyService.update(req));
     }
 
     @PostMapping("/delete/batch")
-    @ApiOperation(value = "云类型批量删除", notes = "批量删除")
+    @ApiOperation(value = "云分类批量删除", notes = "批量删除")
     public ResultInfo<Boolean> deleteBatchClassify(@Validated @RequestBody ClassifyDeleteReq req){
 
         return ResultInfo.result(classifyService.deleteBatch(req));

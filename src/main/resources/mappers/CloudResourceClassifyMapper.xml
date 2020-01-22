@@ -9,6 +9,15 @@
   <sql id="Base_Column_List" >
     id, resource_id, classify_id
   </sql>
+  <insert id="saveBatch">
+        insert into cloud_resource_classify (resource_id, classify_id
+      )
+    values
+    <foreach collection="ids" separator="," item="item">
+      (#{item,jdbcType=BIGINT}, #{classiftyId,jdbcType=BIGINT}
+      )
+    </foreach>
+  </insert>
   <delete id="deleteByResourceIds">
     delete from cloud_resource_classify where resource_id in(
     <foreach collection="ids" separator="," item="item">

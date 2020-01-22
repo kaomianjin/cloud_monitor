@@ -1,5 +1,7 @@
 package com.jinkun.cloud_monitor.dao;
 
+import com.jinkun.cloud_monitor.client.pojo.Prometheus.ResourceTigger;
+import com.jinkun.cloud_monitor.client.pojo.Prometheus.ResourceTriggerDetail;
 import com.jinkun.cloud_monitor.domain.bean.MonitorManagement;
 import com.jinkun.cloud_monitor.domain.request.CloudTypeManagementQueryReq;
 import com.jinkun.cloud_monitor.domain.vo.CloudTypeManagementVo;
@@ -32,4 +34,6 @@ public interface MonitorManagementMapper {
     List<MonitorManagement> selectAllAuto();
 
     List<MonitorManagement> selectAllAutoTemplate();
+
+    List<ResourceTriggerDetail> selectAllStartTrigger();
 }

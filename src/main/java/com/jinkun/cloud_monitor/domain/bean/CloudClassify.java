@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -22,7 +23,7 @@ public class CloudClassify {
     private String name;
 
     @NotNull(message = "需要标明启用禁用")
-    @ApiModelProperty(value = "资源分类id", required = true, dataType = "Boolean", name = "status", example = "true")
+    @ApiModelProperty(value = "启用禁用", required = true, dataType = "Boolean", name = "status", example = "true")
     private boolean status;
 
     @NotNull(message = "需要标明属于哪个云下")
@@ -32,6 +33,9 @@ public class CloudClassify {
     @NotNull(message = "需要标明属于哪个云组件下")
     @ApiModelProperty(value = "云组件id", required = true, dataType = "Long", name = "cloudComponentsId", example = "1")
     private Long cloudComponentsId;
+
+    @ApiModelProperty(value = "模板id", required = true, dataType = "Long", name = "templateId", example = "1")
+    private List<Long> templateIds;
 
     @ApiModelProperty(value = "分类描述", required = true, dataType = "String", name = "description", example = "这是一个描述")
     private String description;

@@ -1,6 +1,5 @@
 package com.jinkun.cloud_monitor.service;
 
-import com.github.pagehelper.PageInfo;
 import com.jinkun.cloud_monitor.domain.bean.CloudMonitorItems;
 import com.jinkun.cloud_monitor.domain.bean.Trigger;
 import com.jinkun.cloud_monitor.domain.request.MonitorItemsDetailReq;

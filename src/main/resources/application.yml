@@ -12,11 +12,3 @@ mybatis:
 swagger:
   show: true
 
-http:
-  maxTotal: 128
-  defaultMaxPerRoute: 30
-  connectTimeout: 5000
-  connectionRequestTimeout: 5000
-  socketTimeout: 10000
-  staleConnectionCheckEnabled: true
-

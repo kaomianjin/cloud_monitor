@@ -9,9 +9,12 @@
   <sql id="Base_Column_List" >
     id, name, cloud_service_id
   </sql>
-  <select id="selectDesignateItem" resultType="com.jinkun.cloud_monitor.domain.po.DesignateItem">
+  <select id="selectPeakDesignateItem" resultType="com.jinkun.cloud_monitor.domain.po.DesignateItem">
     SELECT id,service_id cloudServiceId,component_id cloudComponentId,`type`,item  FROM `designate_item`
     where `type` in (1,2,3)
+  </select>
+  <select id="selectAllDesignateItem" resultType="com.jinkun.cloud_monitor.domain.po.DesignateItem">
+    SELECT id,service_id cloudServiceId,component_id cloudComponentId,`type`,item  FROM `designate_item`
   </select>
   <select id="countByServiceId" resultType="com.jinkun.cloud_monitor.domain.po.CloudComponentCount">
     SELECT

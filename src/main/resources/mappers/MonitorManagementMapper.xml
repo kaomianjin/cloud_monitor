@@ -13,6 +13,33 @@
   <sql id="Base_Column_List" >
     id, cloud_service_id, cloud_components_id, cloud_datasource_id, monitor, auto, template_id
   </sql>
+  <select id="selectAllStartTrigger" resultType="com.jinkun.cloud_monitor.client.pojo.Prometheus.ResourceTriggerDetail">
+    SELECT
+        a.uuid,
+        d.id triggerId,
+        d.`status`,
+        d.severity,
+        d.rule_info ruleInfo,
+        d.judge,
+        d.converge,
+        d.threshold_value thresholdValue,
+        d.measure,
+        d.item,
+        d.cycle_length cycleLength,
+        d.cycle cycle,
+        a.monitor_type monitorType
+    FROM
+        `cloud_resource` a
+        JOIN cloud_datasource f ON a.data_source_id = f.id
+        JOIN cloud_resource_template b ON a.id = b.resource_id
+        JOIN cloud_monitor_items c ON b.template_id = c.template_id
+        JOIN `trigger` d ON c.id = d.monitor_items_id
+
+    WHERE
+        c.`status` = TRUE
+        AND d.`status` = TRUE
+        AND f.`status` = TRUE
+  </select>
   <update id="updateBatch">
     <foreach collection="list" separator=";" item="item">
       update monitor_management

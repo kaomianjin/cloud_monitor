@@ -122,7 +122,7 @@ public class TemplateController {
     }
 
     @PostMapping("/get/classify/batch")
-    @ApiOperation(value = "获取木板下的分类", notes = "获取木板下的分类")
+    @ApiOperation(value = "获取模板下的分类", notes = "获取模板下的分类")
     public  ResultInfo<List<TemplateClassifyVo>> selectBatchClassify(@Validated @RequestBody TemplateClassifyQuery req){
 
         return ResultInfo.successResultInfo(templateService.selectBatchClassify(req));

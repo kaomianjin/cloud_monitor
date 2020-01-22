@@ -26,5 +26,7 @@ public interface CloudComponentsMapper {
 
     List<CloudComponentCount> countByServiceId(@Param("id") Long id);
 
-    List<DesignateItem> selectDesignateItem();
+    List<DesignateItem> selectAllDesignateItem();
+
+    List<DesignateItem> selectPeakDesignateItem();
 }

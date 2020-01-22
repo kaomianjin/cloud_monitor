@@ -1,5 +1,7 @@
 package com.jinkun.cloud_monitor.dao;
 
+import com.jinkun.cloud_monitor.client.pojo.Prometheus.ResourceTigger;
+import com.jinkun.cloud_monitor.client.pojo.Prometheus.ResourceTriggerDetail;
 import com.jinkun.cloud_monitor.domain.bean.CloudClassify;
 import com.jinkun.cloud_monitor.domain.bean.Template;
 import com.jinkun.cloud_monitor.domain.request.ClassifyDetailReq;
@@ -38,4 +40,6 @@ public interface CloudClassifyMapper {
     int deleteBatchByIds(@Param("ids")List<Long> ids);
 
     List<TemplateClassifyVo> selectVoByTemplateId(@Param("templateId") Long templateId);
+
+    List<ResourceTriggerDetail> selectAllStartTrigger();
 }

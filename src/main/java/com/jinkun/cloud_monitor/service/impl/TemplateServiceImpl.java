@@ -13,7 +13,7 @@ import com.jinkun.cloud_monitor.domain.vo.PageView;
 import com.jinkun.cloud_monitor.domain.vo.TemplateClassifyVo;
 import com.jinkun.cloud_monitor.domain.vo.TemplateVo;
 import com.jinkun.cloud_monitor.service.ITemplateService;
-import com.jinkun.cloud_monitor.utils.AssertUtil;
+import com.jinkun.cloud_monitor.utils.lang.AssertUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 

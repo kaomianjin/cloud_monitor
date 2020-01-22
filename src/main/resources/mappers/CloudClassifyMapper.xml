@@ -12,6 +12,36 @@
   <sql id="Base_Column_List" >
     id, name, status, cloud_service_id, cloud_components_id, description
   </sql>
+    <select id="selectAllStartTrigger" resultType="com.jinkun.cloud_monitor.client.pojo.Prometheus.ResourceTriggerDetail">
+        SELECT
+            a.uuid,
+            f.id triggerId,
+            f.`status`,
+            f.severity,
+            f.rule_info ruleInfo,
+            f.judge,
+            f.converge,
+            f.threshold_value thresholdValue,
+            f.measure,
+            f.item,
+            f.cycle_length cycleLength,
+            f.cycle cycle,
+            a.monitor_type monitorType
+        FROM
+            `cloud_resource` a
+            JOIN cloud_datasource b ON a.data_source_id = b.id
+            JOIN cloud_resource_classify c ON a.id = c.resource_id
+            JOIN cloud_classify g ON c.classify_id=g.id
+            JOIN cloud_classify_template d ON c.classify_id=d.classify_id
+            JOIN cloud_monitor_items e ON d.template_id = e.template_id
+            JOIN `trigger` f ON e.id = f.monitor_items_id
+
+        WHERE
+            b.`status` = TRUE
+            AND e.`status`=true
+            AND g.`status` = TRUE
+            AND f.`status` = TRUE
+    </select>
   <delete id="deleteBatchByIds">
     DELETE FROM cloud_classify WHERE id in(
     <foreach collection="ids" item="item" separator=",">

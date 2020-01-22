@@ -2,6 +2,9 @@ package com.jinkun.cloud_monitor.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.jinkun.cloud_monitor.client.PrometheusClient;
+import com.jinkun.cloud_monitor.client.pojo.Prometheus.ResourceTigger;
+import com.jinkun.cloud_monitor.constant.Prometheus.PrometheusConstant;
 import com.jinkun.cloud_monitor.dao.*;
 import com.jinkun.cloud_monitor.domain.bean.*;
 import com.jinkun.cloud_monitor.domain.po.ClassifyDetail;
@@ -9,7 +12,7 @@ import com.jinkun.cloud_monitor.domain.request.*;
 import com.jinkun.cloud_monitor.domain.vo.ClassifyVo;
 import com.jinkun.cloud_monitor.domain.vo.PageView;
 import com.jinkun.cloud_monitor.service.IClassifyService;
-import com.jinkun.cloud_monitor.utils.AssertUtil;
+import com.jinkun.cloud_monitor.utils.lang.AssertUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -39,6 +42,12 @@ public class ClassifyServiceImpl implements IClassifyService {
     private CloudClassifyTemplateMapper cloudClassifyTemplateMapper;
     @Resource
     private CloudTypeMapper cloudTypeMapper;
+    @Resource
+    private PrometheusClient prometheusClient;
+    @Resource
+    private TriggerMapper triggerMapper;
+    @Resource
+    private CloudResourceMapper cloudResourceMapper;
 
     @Override
     public PageView<ClassifyVo> selectList(ClassifyQueryReq req) {
@@ -51,7 +60,6 @@ public class ClassifyServiceImpl implements IClassifyService {
             classifyVos=cloudClassifyMapper.selectListVoByParameter(ids);
         }
         pageInfo.setList(classifyVos);
-
 
         return new PageView<ClassifyVo>(pageInfo);
     }
@@ -88,11 +96,19 @@ public class ClassifyServiceImpl implements IClassifyService {
 
         CloudClassify cloudClassify=new CloudClassify(req);
 
-        boolean insetClassity=cloudClassifyMapper.insert(cloudClassify)==1;
+        cloudClassifyMapper.insert(cloudClassify);
 
-        boolean insetClassityTemplate=cloudClassifyMapper.inserClassifyTemplate(req.getTemplateId(),cloudClassify.getId())==1;
-
-        return insetClassity&&insetClassityTemplate;
+        List<CloudClassifyTemplate> cloudClassifyTemplates=new ArrayList<>();
+        req.getTemplateIds().forEach(templateId ->{
+            CloudClassifyTemplate cloudClassifyTemplate=new CloudClassifyTemplate();
+            cloudClassifyTemplate.setTemplateId(templateId);
+            cloudClassifyTemplate.setClassifyId(cloudClassify.getId());
+            cloudClassifyTemplates.add(cloudClassifyTemplate);
+        });
+        if (cloudClassifyTemplates.size()>0){
+            cloudClassifyTemplateMapper.insertBatch(cloudClassifyTemplates);
+        }
+        return true;
     }
 
     @Override
@@ -105,15 +121,23 @@ public class ClassifyServiceImpl implements IClassifyService {
 
         CloudClassify cloudClassify=new CloudClassify(req);
 
-        CloudClassifyTemplate cloudResourceClassify=new CloudClassifyTemplate(req.getTemplateId(),req.getId());
-
-        boolean updateClassity=cloudClassifyMapper.updateByPrimaryKeySelective(cloudClassify)==1;
+        cloudClassifyMapper.updateByPrimaryKeySelective(cloudClassify);
 
         cloudClassifyTemplateMapper.deleteByClassify(req.getId());
 
-        boolean updateClassityTemplate=cloudClassifyTemplateMapper.insertSelective(cloudResourceClassify)==1;
+        List<Long>templateIds=req.getTemplateIds();
 
-        return updateClassity&&updateClassityTemplate;
+        List<CloudClassifyTemplate> cloudClassifyTemplates=new ArrayList<>();
+        templateIds.forEach(templateId ->{
+
+            CloudClassifyTemplate cloudClassifyTemplate=new CloudClassifyTemplate(templateId,req.getId());
+
+            cloudClassifyTemplates.add(cloudClassifyTemplate);
+        });
+
+        cloudClassifyTemplateMapper.insertBatch(cloudClassifyTemplates);
+
+        return true;
     }
 
     @Override
@@ -147,4 +171,5 @@ public class ClassifyServiceImpl implements IClassifyService {
 
         return cloudComponentsMapper.selectComponentsBycloudServiceId(req.getId());
     }
+
 }

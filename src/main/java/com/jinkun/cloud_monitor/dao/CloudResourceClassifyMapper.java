@@ -19,4 +19,8 @@ public interface CloudResourceClassifyMapper {
     int updateByPrimaryKey(CloudResourceClassify record);
 
     int deleteByResourceIds(@Param("ids") List<Long> ids);
+
+    List<CloudResourceClassify> selectByClassiftyId(Long classiftyId);
+
+    int saveBatch(@Param("ids") List<Long> ids,@Param("classiftyId") Long classiftyId);
 }
